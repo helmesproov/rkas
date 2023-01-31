@@ -1,0 +1,47 @@
+entity RealEstate {
+	id Long unique
+    name String
+}
+
+entity Contract {
+  id Long unique
+  name String
+}
+
+entity Service {
+	id Long unique
+    name String
+	price BigDecimal
+    validFrom Instant
+    validTo Instant
+}
+
+entity Act {
+	id Long unique
+    name String
+	status String required
+}
+
+relationship OneToMany {
+	RealEstate{service} to Service
+}
+
+relationship ManyToMany {
+	RealEstate{contract} to Contract{realEstate}
+	Contract{act} to Act{contract}
+}
+
+// Set pagination options
+paginate Act with infinite-scroll
+service all with serviceClass
+dto all with mapstruct
+
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+//////////////////////////////////////service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -1,0 +1,100 @@
+<div>
+  <h2 id="page-heading" data-cy="RealEstateHeading">
+    <span>Real Estates</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Värskenda nimekirja</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-real-estate"
+        [routerLink]="['/real-estate/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Lisa uus Real Estate </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="realEstates?.length === 0">
+    <span>Ei leitud ühtegi Real Estates</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="realEstates && realEstates.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span>Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span>Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="contract.id">
+            <div class="d-flex">
+              <span>Contract</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let realEstate of realEstates; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/real-estate', realEstate.id, 'view']">{{ realEstate.id }}</a>
+          </td>
+          <td>{{ realEstate.name }}</td>
+          <td>
+            <span *ngFor="let contract of realEstate.contracts; let last = last">
+              <a class="form-control-static" [routerLink]="['/contract', contract.id, 'view']">{{ contract.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/real-estate', realEstate.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">Vaata</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/real-estate', realEstate.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Muuda</span>
+              </button>
+
+              <button type="submit" (click)="delete(realEstate)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Kustuta</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
