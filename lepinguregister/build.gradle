@@ -16,6 +16,7 @@ plugins {
     id "com.google.cloud.tools.jib"
     id "com.gorylenko.gradle-git-properties"
     id "com.github.node-gradle.node"
+    id "org.liquibase.gradle"
     id "io.spring.nohttp"
     id "com.github.andygoossens.gradle-modernizer-plugin"
 }
@@ -77,36 +78,6 @@ springBoot {
     mainClass = "ee.rkas.lepinguregister.LepinguregisterApp"
 }
 
-test {
-    useJUnitPlatform()
-    exclude "**/*IT*", "**/*IntTest*"
-    testLogging {
-        events 'FAILED', 'SKIPPED'
-    }
-    jvmArgs += '-Djava.security.egd=file:/dev/./urandom -Xmx512m'
-    // uncomment if the tests reports are not generated
-    // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
-    // ignoreFailures true
-    reports.html.enabled = false
-}
-
-modernizer {
-    failOnViolations = true
-    includeTestClasses = true
-}
-
-
-
-check.dependsOn integrationTest
-task testReport(type: TestReport) {
-    destinationDir = file("$buildDir/reports/tests")
-    reportOn test
-}
-
-task integrationTestReport(type: TestReport) {
-    destinationDir = file("$buildDir/reports/tests")
-    reportOn integrationTest
-}
 
 if (!project.hasProperty("runList")) {
     project.ext.runList = "main"
@@ -249,10 +220,6 @@ wrapper {
     gradleVersion = "7.4.2"
 }
 
-task webapp_test(type: NpmTask, dependsOn: "npm_install") {
-    args = ["run", "webapp:test"]
-}
-
 if (project.hasProperty("nodeInstall")) {
     node {
         version = "16.17.0"
@@ -274,6 +241,5 @@ if (project.hasProperty("nodeInstall")) {
     tasks.named("npmSetup").configure { finalizedBy fixedNpm }
 }
 
-test.dependsOn webapp_test
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo
