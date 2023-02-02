@@ -16,8 +16,6 @@ plugins {
     id "com.google.cloud.tools.jib"
     id "com.gorylenko.gradle-git-properties"
     id "com.github.node-gradle.node"
-    id "org.liquibase.gradle"
-    id "org.sonarqube"
     id "io.spring.nohttp"
     id "com.github.andygoossens.gradle-modernizer-plugin"
 }
@@ -191,8 +189,6 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-hppc"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
-    testImplementation "org.testcontainers:junit-jupiter"
-    testImplementation "org.testcontainers:testcontainers"
     implementation "org.springdoc:springdoc-openapi-webmvc-core"
     implementation "com.zaxxer:HikariCP"
     implementation "org.apache.commons:commons-lang3"
@@ -208,7 +204,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-activemq"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    testImplementation "org.testcontainers:jdbc"
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-starter-mail"
     implementation "org.springframework.boot:spring-boot-starter-security"
@@ -222,8 +217,6 @@ dependencies {
     implementation "org.zalando:problem-spring-web"
     implementation "org.springframework.boot:spring-boot-starter-undertow"
     implementation "org.springframework.security:spring-security-data"
-    implementation "io.micrometer:micrometer-registry-prometheus"
-    implementation "io.dropwizard.metrics:metrics-core"
 
     implementation "org.apache.activemq:activemq-broker:5.17.3"
 
@@ -234,7 +227,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-    //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
 if (project.hasProperty("gae")) {

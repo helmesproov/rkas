@@ -50,7 +50,7 @@ Add the `help` flag on any command to see how you can use it. For example, `npm 
 The `npm run` command will list all of the scripts available to run for this project.
 
 ```typescript
-ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
+ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })
 ```
 
 ## Building for production
