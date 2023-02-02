@@ -39,16 +39,6 @@ public final class SecurityUtils {
     }
 
     /**
-     * Check if a user is authenticated.
-     *
-     * @return true if the user is authenticated, false otherwise.
-     */
-    public static boolean isAuthenticated() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
-    }
-
-    /**
      * Checks if the current user has any of the authorities.
      *
      * @param authorities the authorities to check.

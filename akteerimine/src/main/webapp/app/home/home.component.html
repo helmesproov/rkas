@@ -8,23 +8,6 @@
 
     <p class="lead" jhiTranslate="home.subtitle">See on teie avaleht</p>
 
-    <div [ngSwitch]="account !== null">
-      <div class="alert alert-success" *ngSwitchCase="true">
-        <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }"
-          >Olete sisse logitud kasutajana "{{ account.login }}".</span
-        >
-      </div>
-
-      <div class="alert alert-warning" *ngSwitchCase="false">
-        <span jhiTranslate="global.messages.info.authenticated.prefix">Kui te soovite </span>
-        <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sisse logida</a
-        ><span jhiTranslate="global.messages.info.authenticated.suffix"
-          >, siis võite kasutada vaikekontosid:<br />- Administraator (kasutajanimi="admin" ja salasõna="admin") <br />- Kasutaja
-          (kasutajanimi="user" ja salasõna="user").</span
-        >
-      </div>
-    </div>
-
     <p jhiTranslate="home.question">Kui teil on küsimusi JHipster kohta:</p>
 
     <ul>
