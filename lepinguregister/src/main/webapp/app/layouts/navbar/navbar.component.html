@@ -162,30 +162,6 @@
                 <span>Sessioonid</span>
               </a>
             </li>
-            <li *ngSwitchCase="true">
-              <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">
-                <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>
-                <span>Logi välja</span>
-              </a>
-            </li>
-            <li *ngSwitchCase="false">
-              <a class="dropdown-item" (click)="login()" id="login" data-cy="login">
-                <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
-                <span>Logi sisse</span>
-              </a>
-            </li>
-            <li *ngSwitchCase="false">
-              <a
-                class="dropdown-item"
-                routerLink="account/register"
-                routerLinkActive="active"
-                (click)="collapseNavbar()"
-                data-cy="register"
-              >
-                <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
-                <span>Registreeru</span>
-              </a>
-            </li>
           </ul>
         </li>
       </ul>

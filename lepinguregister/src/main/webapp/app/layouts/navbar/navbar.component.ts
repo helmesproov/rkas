@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   version = '';
   entitiesNavbarItems: any[] = [];
 
-  constructor(private profileService: ProfileService, private router: Router) {
+  constructor(private router: Router) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
@@ -25,23 +25,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.entitiesNavbarItems = EntityNavbarItems;
-    this.profileService.getProfileInfo().subscribe(profileInfo => {
-      this.inProduction = profileInfo.inProduction;
-      this.openAPIEnabled = profileInfo.openAPIEnabled;
-    });
   }
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
-  }
-
-  logout(): void {
-    this.collapseNavbar();
-    this.router.navigate(['']);
   }
 
   toggleNavbar(): void {
