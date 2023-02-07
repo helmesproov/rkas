@@ -1,12 +1,11 @@
-package ee.rkas.lepinguregister.message.dto;
+package ee.rkas.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ContractServicePriceUpdatedMessage {
     private String errors;

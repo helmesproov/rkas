@@ -1,5 +1,5 @@
 package ee.rkas.lepinguregister.message;
-import ee.rkas.lepinguregister.message.dto.ContractServicePriceUpdatedMessage;
+import ee.rkas.common.ContractServicePriceUpdatedMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.message.SimpleMessage;
@@ -20,10 +20,5 @@ public class MessageService {
     log.info("Sending updateServicePrice to queue: {}", simpleMessage.toString());
     //jmsTemplate.convertAndSend("TestQueue", new ContractServicePriceUpdateMessage(1L, 1L, BigDecimal.TEN));
     jmsTemplate.convertAndSend("TestQueue", new ContractServicePriceUpdatedMessage("error"));
-  }
-
-  @JmsListener(destination = "TestQueue")
-  public void receiveServicePriceUpdatedMessage(Message message) {
-    log.info("Received {}", message);
   }
 }

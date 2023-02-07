@@ -1,11 +1,10 @@
 package ee.rkas.akteerimine.message;
-import ee.rkas.akteerimine.message.dto.ContractServicePriceUpdatedMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
+import ee.rkas.common.ContractServicePriceUpdatedMessage;
 
 import javax.jms.Message;
 
@@ -23,7 +22,7 @@ public class MessageService {
 //  }
 
   @JmsListener(destination = "TestQueue")
-  public void receiveServicePriceUpdatedMessage(Message message) {
+  public void receiveServicePriceUpdatedMessage(ContractServicePriceUpdatedMessage message) {
     log.info("Received {}", message);
   }
 }
