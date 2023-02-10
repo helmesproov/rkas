@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { VERSION } from 'app/app.constants';
-import { ProfileService } from 'app/layouts/profiles/profile.service';
-import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 
 @Component({
   selector: 'jhi-navbar',
@@ -24,7 +22,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.entitiesNavbarItems = EntityNavbarItems;
+    this.entitiesNavbarItems = [];
   }
 
   collapseNavbar(): void {

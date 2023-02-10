@@ -40,6 +40,7 @@ export class ServiceService {
 
   update(service: IService): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(service);
+    console.log(copy)
     return this.http
       .put<RestService>(`${this.resourceUrl}/${this.getServiceIdentifier(service)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));

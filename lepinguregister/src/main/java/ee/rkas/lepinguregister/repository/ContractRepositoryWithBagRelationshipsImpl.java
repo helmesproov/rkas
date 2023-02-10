@@ -8,6 +8,9 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
+import ee.rkas.lepinguregister.service.dto.RealEstateServicesDTO;
 import org.hibernate.annotations.QueryHints;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -56,5 +59,16 @@ public class ContractRepositoryWithBagRelationshipsImpl implements ContractRepos
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
+    }
+
+    @Override
+    public List<ContractChangeDTO> fetchContractChanges() {
+        return entityManager
+                .createQuery(
+                        "SELECT new ee.rkas.lepinguregister.service.dto.ContractChangeDTO(c.id, s.id, r.id, ps.id, c.name, r.name, s.name, ps.price, ps.validFrom, ps.validTo) " +
+                                "FROM Contract c JOIN c.realEstates r JOIN r.services s JOIN PendingService ps ON ps.serviceId = s.id GROUP BY c.id, ps.id, r.name, s.name, s.id, r.id",
+                        ContractChangeDTO.class
+                )
+                .getResultList();
     }
 }

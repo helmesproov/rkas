@@ -2,6 +2,7 @@ package ee.rkas.lepinguregister.web.rest;
 
 import ee.rkas.lepinguregister.repository.ContractRepository;
 import ee.rkas.lepinguregister.service.ContractService;
+import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
 import ee.rkas.lepinguregister.service.dto.ContractDTO;
 import ee.rkas.lepinguregister.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -72,29 +73,6 @@ public class ContractResource {
      * or with status {@code 500 (Internal Server Error)} if the contractDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/contracts/{id}")
-    public ResponseEntity<ContractDTO> updateContract(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody ContractDTO contractDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Contract : {}, {}", id, contractDTO);
-        if (contractDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, contractDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!contractRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        ContractDTO result = contractService.update(contractDTO);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, contractDTO.getId().toString()))
-            .body(result);
-    }
 
     /**
      * {@code PATCH  /contracts/:id} : Partial updates given fields of an existing contract, field will ignore if it is null
@@ -142,6 +120,12 @@ public class ContractResource {
     public List<ContractDTO> getAllContracts(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Contracts");
         return contractService.findAll();
+    }
+
+    @GetMapping("/contracts/pending-changes")
+    public List<ContractChangeDTO> getAllPendingContractChanges() {
+        log.debug("REST request to get all pending contract changes");
+        return contractService.findAllPendingContractChanges();
     }
 
     /**

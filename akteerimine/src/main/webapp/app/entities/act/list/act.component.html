@@ -1,0 +1,42 @@
+<div>
+  <h2 id="page-heading" data-cy="ActHeading">
+    <span>Aktid</span>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="acts?.length === 0">
+    <span>Ei leitud ühtegi Acts</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="acts && acts.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col">
+            <span>Akti nimetus</span>
+          </th>
+          <th scope="col">
+            <span>Olek</span>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody
+        infinite-scroll
+        (scrolled)="loadPage(page + 1)"
+        [infiniteScrollDisabled]="page - 1 >= links['last']"
+        [infiniteScrollDistance]="0"
+      >
+        <tr *ngFor="let act of acts; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/act', act.id, 'view']">{{ act.name }}</a>
+          </td>
+          <td>{{ act.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

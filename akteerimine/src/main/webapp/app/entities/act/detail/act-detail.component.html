@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="act">
+      <h2 data-cy="actDetailsHeading"><span>{{ act.name }}</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Tagasi</span>
+      </button>
+
+      <div *ngIf="act.id">
+        <real-estate-services [actId]="act.id"></real-estate-services>
+      </div>
+
+    </div>
+  </div>
+</div>

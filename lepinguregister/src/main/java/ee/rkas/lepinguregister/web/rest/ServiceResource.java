@@ -1,7 +1,11 @@
 package ee.rkas.lepinguregister.web.rest;
 
+import ee.rkas.lepinguregister.domain.Service;
+import ee.rkas.lepinguregister.repository.PendingServiceRepository;
 import ee.rkas.lepinguregister.repository.ServiceRepository;
 import ee.rkas.lepinguregister.service.ServiceService;
+import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
+import ee.rkas.lepinguregister.service.dto.ContractDTO;
 import ee.rkas.lepinguregister.service.dto.ServiceDTO;
 import ee.rkas.lepinguregister.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -34,10 +38,13 @@ public class ServiceResource {
     private final ServiceService serviceService;
 
     private final ServiceRepository serviceRepository;
+    private final PendingServiceRepository pendingServiceRepository;
 
-    public ServiceResource(ServiceService serviceService, ServiceRepository serviceRepository) {
+    public ServiceResource(ServiceService serviceService, ServiceRepository serviceRepository,
+                           PendingServiceRepository pendingServiceRepository) {
         this.serviceService = serviceService;
         this.serviceRepository = serviceRepository;
+        this.pendingServiceRepository = pendingServiceRepository;
     }
 
     /**
@@ -92,6 +99,26 @@ public class ServiceResource {
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, serviceDTO.getId().toString()))
             .body(result);
+    }
+
+    @PutMapping("/service/pending/{id}")
+    public ResponseEntity<ServiceDTO> updatePendingService(
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody ContractChangeDTO contractChangeDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Contract : {}, {}", id, contractChangeDTO);
+        if (contractChangeDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, contractChangeDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        ServiceDTO result = serviceService.updatePendingService(contractChangeDTO);
+        return ResponseEntity
+                .ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .body(result);
     }
 
     /**
@@ -152,6 +179,18 @@ public class ServiceResource {
         log.debug("REST request to get Service : {}", id);
         Optional<ServiceDTO> serviceDTO = serviceService.findOne(id);
         return ResponseUtil.wrapOrNotFound(serviceDTO);
+    }
+
+    /**
+     * {@code GET  /services/:id} : get the "id" service.
+     *
+     * @param id the id of the serviceDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the serviceDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/services/real-estate/{id}")
+    public List<ServiceDTO> getAllServicesByRealEstateId(@PathVariable Long id) {
+        log.debug("REST request to get Service by Real-estate id : {}", id);
+        return serviceService.findAllByRealEstateId(id);
     }
 
     /**

@@ -1,0 +1,36 @@
+<div>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="realEstateServices?.length === 0">
+        <span>Ei leitud ühtegi objekti</span>
+    </div>
+
+    <div class="table-responsive table-entities" id="entities"
+         *ngIf="realEstateServices && realEstateServices.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Objekt</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Teenused</span>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let realEstate of realEstateServices" data-cy="entityTable">
+                <td>{{ realEstate.name }}</td>
+                <td><a (click)="modify(realEstate)"><u> {{ realEstate.serviceCount }}</u> </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

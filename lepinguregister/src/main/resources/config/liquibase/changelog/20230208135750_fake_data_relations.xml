@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20230208135750-1-data" author="jhipster" context="faker">
+        <loadData
+                file="config/liquibase/fake-data/rel_act__contract.csv"
+                separator=";"
+                tableName="rel_contract__act"
+                usePreparedStatements="true">
+            <column name="act_id" type="numeric"/>
+            <column name="contract_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+
+        <loadData
+                file="config/liquibase/fake-data/rel_real_estate__contract.csv"
+                separator=";"
+                tableName="rel_real_estate__contract"
+                usePreparedStatements="true">
+            <column name="contract_id" type="numeric"/>
+            <column name="real_estate_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

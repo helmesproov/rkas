@@ -1,8 +1,13 @@
 package ee.rkas.lepinguregister.repository;
 
 import ee.rkas.lepinguregister.domain.RealEstate;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import ee.rkas.lepinguregister.domain.Service;
+import ee.rkas.lepinguregister.service.dto.RealEstateServicesDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;

@@ -1,0 +1,13 @@
+<form *ngIf="realEstate" name="modifyForm" (ngSubmit)="confirmModify(realEstate.id!)">
+    <div class="modal-header">
+        <h4 class="modal-title" data-cy="actDeleteDialogHeading">Objekti "{{realEstate.name}}" korralised teenused</h4>
+
+        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()"></button>
+    </div>
+
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-service [realEstateId]="realEstate.id"></jhi-service>
+    </div>
+
+</form>

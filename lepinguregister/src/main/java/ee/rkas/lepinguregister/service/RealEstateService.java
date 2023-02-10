@@ -3,6 +3,7 @@ package ee.rkas.lepinguregister.service;
 import ee.rkas.lepinguregister.domain.RealEstate;
 import ee.rkas.lepinguregister.repository.RealEstateRepository;
 import ee.rkas.lepinguregister.service.dto.RealEstateDTO;
+import ee.rkas.lepinguregister.service.dto.RealEstateServicesDTO;
 import ee.rkas.lepinguregister.service.mapper.RealEstateMapper;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,6 +89,17 @@ public class RealEstateService {
     public List<RealEstateDTO> findAll() {
         log.debug("Request to get all RealEstates");
         return realEstateRepository.findAll().stream().map(realEstateMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * Get all the realEstates by act id.
+     *
+     * @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<RealEstateServicesDTO> findAllWithActId(Long actId) {
+        log.debug("Request to get all RealEstates by act id");
+        return realEstateRepository.fetchRealEstatesByActId(actId);
     }
 
     /**

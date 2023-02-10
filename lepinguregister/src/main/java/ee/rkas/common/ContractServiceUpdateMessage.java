@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContractServicePriceUpdateMessage {
-    private Long contractId;
-    private Long serviceId;
+public class ContractServiceUpdateMessage {
     private BigDecimal price;
+    private Instant validFrom;
+    private Instant validTo;
+    private Long serviceId;
 }

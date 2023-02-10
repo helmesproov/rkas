@@ -1,23 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="ContractHeading">
-    <span>Contracts</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Värskenda nimekirja</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-contract"
-        [routerLink]="['/contract/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span> Lisa uus Contract </span>
-      </button>
-    </div>
+    <span>Lepingud, milles teenuse hind vajab muutmist</span>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -31,65 +14,52 @@
   <div class="table-responsive table-entities" id="entities" *ngIf="contracts && contracts.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
+        <tr>
+          <th scope="col">
             <div class="d-flex">
-              <span>Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+              <span>Leping</span>
             </div>
           </th>
-          <th scope="col" jhiSortBy="name">
+          <th scope="col">
             <div class="d-flex">
-              <span>Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+              <span>Objekt</span>
             </div>
           </th>
-          <th scope="col" jhiSortBy="act.id">
+          <th scope="col">
             <div class="d-flex">
-              <span>Act</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+              <span>Teenus</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span>Hind</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span>Kehtiv alates</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span>Kehtiv kuni</span>
             </div>
           </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let contract of contracts; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/contract', contract.id, 'view']">{{ contract.id }}</a>
-          </td>
-          <td>{{ contract.name }}</td>
-          <td>
-            <span *ngFor="let act of contract.acts; let last = last">
-              <a class="form-control-static" [routerLink]="['/act', act.id, 'view']">{{ act.id }}</a
-              >{{ last ? '' : ', ' }}
-            </span>
-          </td>
+        <tr *ngFor="let contract of contracts" data-cy="entityTable">
+          <td>{{ contract.contractName }}</td>
+          <td>{{ contract.realEstateName }}</td>
+          <td>{{ contract.serviceName }}</td>
+          <td>{{ contract.price }}</td>
+          <td>{{ contract.validFrom | formatMediumDatetime }}</td>
+          <td>{{ contract.validTo | formatMediumDatetime }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/contract', contract.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">Vaata</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/contract', contract.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Muuda</span>
-              </button>
-
-              <button type="submit" (click)="delete(contract)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Kustuta</span>
+              <button type="submit" (click)="update(contract)" class="btn btn-primary" data-cy="entityDeleteButton">
+                <span class="d-none d-md-inline">Kinnita</span>
               </button>
             </div>
           </td>

@@ -1,8 +1,11 @@
 package ee.rkas.lepinguregister.web.rest;
 
+import ee.rkas.lepinguregister.domain.RealEstate;
+import ee.rkas.lepinguregister.domain.Service;
 import ee.rkas.lepinguregister.repository.RealEstateRepository;
 import ee.rkas.lepinguregister.service.RealEstateService;
 import ee.rkas.lepinguregister.service.dto.RealEstateDTO;
+import ee.rkas.lepinguregister.service.dto.RealEstateServicesDTO;
 import ee.rkas.lepinguregister.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -143,6 +146,12 @@ public class RealEstateResource {
     public List<RealEstateDTO> getAllRealEstates(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all RealEstates");
         return realEstateService.findAll();
+    }
+
+    @GetMapping("/real-estates/act/{id}")
+    public List<RealEstateServicesDTO> getAllRealEstatesByActId(@PathVariable Long id) {
+        log.debug("REST request to get all RealEstates by Act");
+        return realEstateService.findAllWithActId(id);
     }
 
     /**

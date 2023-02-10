@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="realEstate">
+      <h2 data-cy="realEstateDetailsHeading"><span>Real Estate</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Id</span></dt>
+        <dd>
+          <span>{{ realEstate.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ realEstate.name }}</span>
+        </dd>
+        <dt><span>Contract</span></dt>
+        <dd>
+          <span *ngFor="let contract of realEstate.contracts; let last = last">
+            <a [routerLink]="['/contract', contract.id, 'view']">{{ contract.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Tagasi</span>
+      </button>
+
+      <button type="button" [routerLink]="['/real-estate', realEstate.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Muuda</span>
+      </button>
+    </div>
+  </div>
+</div>

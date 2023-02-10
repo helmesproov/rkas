@@ -2,6 +2,7 @@ package ee.rkas.lepinguregister.service;
 
 import ee.rkas.lepinguregister.domain.Contract;
 import ee.rkas.lepinguregister.repository.ContractRepository;
+import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
 import ee.rkas.lepinguregister.service.dto.ContractDTO;
 import ee.rkas.lepinguregister.service.mapper.ContractMapper;
 import java.util.LinkedList;
@@ -120,4 +121,10 @@ public class ContractService {
         log.debug("Request to delete Contract : {}", id);
         contractRepository.deleteById(id);
     }
+
+    public List<ContractChangeDTO> findAllPendingContractChanges() {
+        log.debug("Request to get all pending contract changes");
+        return contractRepository.fetchContractChanges();
+    }
+
 }

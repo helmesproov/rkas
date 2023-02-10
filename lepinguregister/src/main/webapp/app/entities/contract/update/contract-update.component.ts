@@ -49,9 +49,7 @@ export class ContractUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const contract = this.contractFormService.getContract(this.editForm);
-    if (contract.id !== null) {
-      this.subscribeToSaveResponse(this.contractService.update(contract));
-    } else {
+    if (contract.id == null) {
       this.subscribeToSaveResponse(this.contractService.create(contract));
     }
   }
