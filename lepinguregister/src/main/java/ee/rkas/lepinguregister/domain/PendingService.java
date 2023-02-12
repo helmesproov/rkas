@@ -1,7 +1,5 @@
 package ee.rkas.lepinguregister.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,6 +25,9 @@ public class PendingService {
 
     @Column(name = "service_id")
     private Long serviceId;
+
+    @Column(name = "act_id")
+    private Long actId;
 
     public Long getId() {
         return id;
@@ -68,4 +69,11 @@ public class PendingService {
         this.serviceId = serviceId;
     }
 
+    public Long getActId() {
+        return actId;
+    }
+
+    public void setActId(Long actId) {
+        this.actId = actId;
+    }
 }

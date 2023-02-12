@@ -2,9 +2,13 @@ package ee.rkas.lepinguregister.service;
 
 import ee.rkas.lepinguregister.domain.Act;
 import ee.rkas.lepinguregister.repository.ActRepository;
+import ee.rkas.lepinguregister.repository.PendingServiceRepository;
 import ee.rkas.lepinguregister.service.dto.ActDTO;
 import ee.rkas.lepinguregister.service.mapper.ActMapper;
+
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,10 +28,13 @@ public class ActService {
     private final ActRepository actRepository;
 
     private final ActMapper actMapper;
+    private final PendingServiceRepository pendingServiceRepository;
 
-    public ActService(ActRepository actRepository, ActMapper actMapper) {
+    public ActService(ActRepository actRepository, ActMapper actMapper,
+                      PendingServiceRepository pendingServiceRepository) {
         this.actRepository = actRepository;
         this.actMapper = actMapper;
+        this.pendingServiceRepository = pendingServiceRepository;
     }
 
     /**
@@ -66,14 +73,14 @@ public class ActService {
         log.debug("Request to partially update Act : {}", actDTO);
 
         return actRepository
-            .findById(actDTO.getId())
-            .map(existingAct -> {
-                actMapper.partialUpdate(existingAct, actDTO);
+                .findById(actDTO.getId())
+                .map(existingAct -> {
+                    actMapper.partialUpdate(existingAct, actDTO);
 
-                return existingAct;
-            })
-            .map(actRepository::save)
-            .map(actMapper::toDto);
+                    return existingAct;
+                })
+                .map(actRepository::save)
+                .map(actMapper::toDto);
     }
 
     /**
@@ -85,7 +92,11 @@ public class ActService {
     @Transactional(readOnly = true)
     public Page<ActDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Acts");
-        return actRepository.findAll(pageable).map(actMapper::toDto);
+        return actRepository.findAll(pageable).map(act -> {
+            ActDTO actDTO = actMapper.toDto(act);
+            actDTO.setEditPending(pendingServiceRepository.existsByActId(actDTO.getId()));
+            return actDTO;
+        });
     }
 
     /**
@@ -97,7 +108,11 @@ public class ActService {
     @Transactional(readOnly = true)
     public Optional<ActDTO> findOne(Long id) {
         log.debug("Request to get Act : {}", id);
-        return actRepository.findById(id).map(actMapper::toDto);
+        return actRepository.findById(id).map(act -> {
+            ActDTO actDTO = actMapper.toDto(act);
+            actDTO.setEditPending(pendingServiceRepository.existsByActId(actDTO.getId()));
+            return actDTO;
+        });
     }
 
     /**

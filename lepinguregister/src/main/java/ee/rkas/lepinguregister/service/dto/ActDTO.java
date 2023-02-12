@@ -14,6 +14,8 @@ public class ActDTO implements Serializable {
 
     private String name;
 
+    private boolean isEditPending;
+
     @NotNull
     private String status;
 
@@ -39,6 +41,14 @@ public class ActDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isEditPending() {
+        return isEditPending;
+    }
+
+    public void setEditPending(boolean editPending) {
+        isEditPending = editPending;
     }
 
     @Override

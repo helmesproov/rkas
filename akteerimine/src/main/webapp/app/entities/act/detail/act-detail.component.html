@@ -1,13 +1,12 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="act">
-      <h2 data-cy="actDetailsHeading"><span>{{ act.name }}</span></h2>
+      <h2 data-cy="actDetailsHeading">
+        <span>{{ act.name }}</span>
+        <span *ngIf="act.editPending" class="text-danger">(muudetud)</span>
+      </h2>
 
       <hr />
-
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Tagasi</span>

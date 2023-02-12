@@ -4,6 +4,7 @@ export interface IAct {
   id: number;
   name?: string | null;
   status?: string | null;
+  editPending?: boolean | null;
   contracts?: Pick<IContract, 'id'>[] | null;
 }
 

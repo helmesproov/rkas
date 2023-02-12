@@ -1,6 +1,7 @@
 package ee.rkas.lepinguregister.service;
 
 import ee.rkas.lepinguregister.domain.Service;
+import ee.rkas.lepinguregister.repository.ActRepository;
 import ee.rkas.lepinguregister.repository.PendingServiceRepository;
 import ee.rkas.lepinguregister.repository.RealEstateRepository;
 import ee.rkas.lepinguregister.repository.ServiceRepository;
@@ -12,6 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import ee.rkas.lepinguregister.type.ActStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +26,8 @@ public class ServiceService {
     private final ServiceRepository serviceRepository;
     private final ServiceMapper serviceMapper;
     private final PendingServiceRepository pendingServiceRepository;
-
     private final RealEstateRepository realEstateRepository;
+    private final ActRepository actRepository;
 
     public ServiceDTO save(ServiceDTO serviceDTO) {
         Service service = serviceMapper.toEntity(serviceDTO);
@@ -72,6 +75,12 @@ public class ServiceService {
 
     public ServiceDTO updatePendingService(ContractChangeDTO contractChangeDTO) {
         pendingServiceRepository.deleteById(contractChangeDTO.getPendingServiceId());
+        Service service = updateService(contractChangeDTO);
+        actRepository.updateStatus(contractChangeDTO.getActId(), ActStatus.KOOSTAMISEL.toString());
+        return serviceMapper.toDto(service);
+    }
+
+    private Service updateService(ContractChangeDTO contractChangeDTO) {
         Service service = new Service();
         service.setId(contractChangeDTO.getServiceId());
         service.setName(contractChangeDTO.getServiceName());
@@ -79,7 +88,6 @@ public class ServiceService {
         service.setValidTo(contractChangeDTO.getValidTo());
         service.setValidFrom(contractChangeDTO.getValidFrom());
         service.setRealEstate(realEstateRepository.findById(contractChangeDTO.getRealEstateId()).orElse(null));
-        service = serviceRepository.save(service);
-        return serviceMapper.toDto(service);
+        return serviceRepository.save(service);
     }
 }

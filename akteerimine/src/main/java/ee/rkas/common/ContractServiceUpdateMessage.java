@@ -15,4 +15,5 @@ public class ContractServiceUpdateMessage {
     private Instant validFrom;
     private Instant validTo;
     private Long serviceId;
+    private Long actId;
 }

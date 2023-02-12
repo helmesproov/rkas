@@ -32,7 +32,7 @@ public class ServiceResource {
     private final Logger log = LoggerFactory.getLogger(ServiceResource.class);
     private static final String ENTITY_NAME = "service";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("clientApp")
     private String applicationName;
 
     private final ServiceService serviceService;
@@ -117,7 +117,7 @@ public class ServiceResource {
         ServiceDTO result = serviceService.updatePendingService(contractChangeDTO);
         return ResponseEntity
                 .ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                 .body(result);
     }
 

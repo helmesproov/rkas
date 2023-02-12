@@ -8,13 +8,14 @@ import { IRealEstateService } from "../real-estate-services.model";
 })
 export class RealEstateServiceModifyDialogComponent {
     realEstate?: IRealEstateService;
+    actId?: number;
 
-    constructor(protected realEstateServicesService: RealEstateServicesService, protected activeModal: NgbActiveModal) {}
+    constructor( protected activeModal: NgbActiveModal) {}
 
     cancel(): void {
         this.activeModal.dismiss();
     }
 
-    confirmModify(id: number): void {
+    confirmModify(): void {
     }
 }

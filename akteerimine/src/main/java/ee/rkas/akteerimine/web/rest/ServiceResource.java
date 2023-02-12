@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -47,7 +48,7 @@ public class ServiceResource {
         messageService.updateService(new SimpleMessage(serviceDTO.getId().toString()), serviceDTO);
         return ResponseEntity
                 .ok()
-                .headers(HeaderUtil.createEntityUpdateAlert("", false, ENTITY_NAME, serviceDTO.getId().toString()))
+                .headers(HeaderUtil.createEntityUpdateAlert("clientApp", true, ENTITY_NAME, serviceDTO.getId().toString()))
                 .body(serviceDTO);
     }
 }

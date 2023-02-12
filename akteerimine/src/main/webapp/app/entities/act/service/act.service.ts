@@ -32,7 +32,6 @@ export class ActService {
   }
 
   find(id: number): Observable<EntityResponseType> {
-    console.log("find")
     return this.http.get<IAct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 

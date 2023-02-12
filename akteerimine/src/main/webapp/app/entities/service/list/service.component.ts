@@ -5,7 +5,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IService } from '../service.model';
 import { EntityArrayResponseType, ServiceService } from '../service/service.service';
-import { ITEM_DELETED_EVENT } from "../../../config/navigation.constants";
 
 @Component({
     selector: 'jhi-service',
@@ -13,6 +12,7 @@ import { ITEM_DELETED_EVENT } from "../../../config/navigation.constants";
 })
 export class ServiceComponent implements OnInit {
     @Input() realEstateId!: number;
+    @Input() actId!: number;
     services?: IService[];
     isLoading = false;
 
@@ -21,7 +21,8 @@ export class ServiceComponent implements OnInit {
         protected activatedRoute: ActivatedRoute,
         public router: Router,
         protected activeModal: NgbActiveModal
-    ) {}
+    ) {
+    }
 
     trackId = (_index: number, item: IService): number => this.serviceService.getServiceIdentifier(item);
 
@@ -45,7 +46,7 @@ export class ServiceComponent implements OnInit {
 
     protected onResponseSuccess(response: EntityArrayResponseType): void {
         this.services = this.fillComponentAttributesFromResponseBody(response.body);
-        this.services = this.services.map(service => ({ ...service, isEdit: false }))
+        this.services = this.services.map(service => ({ ...service, isEdit: false, actId: this.actId }))
     }
 
     protected fillComponentAttributesFromResponseBody(data: IService[] | null): IService[] {
@@ -68,6 +69,7 @@ export class ServiceComponent implements OnInit {
         service.isEdit = false;
         this.serviceService.update(service).subscribe(() => {
             this.activeModal.close();
+            this.router.navigate(['/act']);
         });
     }
 

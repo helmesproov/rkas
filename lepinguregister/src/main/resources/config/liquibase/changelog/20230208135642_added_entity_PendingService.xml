@@ -26,6 +26,9 @@
             <column name="service_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="act_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="service" columnName="valid_from" columnDataType="${datetimeType}"/>

@@ -1,14 +1,14 @@
 <div>
-  <h2 id="page-heading" data-cy="ContractHeading">
-    <span>Lepingud, milles teenuse hind vajab muutmist</span>
-  </h2>
-
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
+  <h2 id="page-heading" data-cy="ContractHeading">
+    <span>Lepingud, milles teenuse hind vajab muutmist</span>
+  </h2>
+
   <div class="alert alert-warning" id="no-result" *ngIf="contracts?.length === 0">
-    <span>Ei leitud ühtegi Contracts</span>
+    <span>Lepinguid pole</span>
   </div>
 
   <div class="table-responsive table-entities" id="entities" *ngIf="contracts && contracts.length > 0">

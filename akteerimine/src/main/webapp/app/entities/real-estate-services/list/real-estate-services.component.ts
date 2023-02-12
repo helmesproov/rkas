@@ -42,6 +42,7 @@ export class RealEstateServicesComponent implements OnInit {
             backdrop: 'static'
         });
         modalRef.componentInstance.realEstate = realEstate;
+        modalRef.componentInstance.actId = this.actId;
     }
 
     protected onResponseSuccess(response: EntityArrayResponseType): void {

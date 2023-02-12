@@ -9,4 +9,9 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ActRepository extends JpaRepository<Act, Long> {}
+public interface ActRepository extends JpaRepository<Act, Long> {
+
+    @Modifying
+    @Query("update Act a set a.status = :status where a.id = :id")
+    void updateStatus(Long id, String status);
+}

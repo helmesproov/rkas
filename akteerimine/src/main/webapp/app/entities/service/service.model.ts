@@ -8,6 +8,7 @@ export interface IService {
   validFrom?: dayjs.Dayjs | null;
   validTo?: dayjs.Dayjs | null;
   isEdit?: boolean | null;
+  actId: number;
   realEstate?: Pick<IRealEstate, 'id'> | null;
 }
 

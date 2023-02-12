@@ -20,6 +20,7 @@ public class ServiceDTO implements Serializable {
     private Instant validFrom;
 
     private Instant validTo;
+    private Long actId;
 
     private RealEstateDTO realEstate;
 
@@ -69,6 +70,14 @@ public class ServiceDTO implements Serializable {
 
     public void setRealEstate(RealEstateDTO realEstate) {
         this.realEstate = realEstate;
+    }
+
+    public Long getActId() {
+        return actId;
+    }
+
+    public void setActId(Long actId) {
+        this.actId = actId;
     }
 
     @Override

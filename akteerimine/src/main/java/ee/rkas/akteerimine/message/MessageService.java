@@ -23,11 +23,7 @@ public class MessageService {
                 serviceDTO.getPrice(),
                 serviceDTO.getValidFrom(),
                 serviceDTO.getValidTo(),
-                serviceDTO.getId()));
-    }
-
-    @JmsListener(destination = "UpdatedServiceQueue")
-    public void receiveServicePriceUpdatedMessage(ContractServiceUpdateMessage message) {
-        log.info("Received {}", message);
+                serviceDTO.getId(),
+                serviceDTO.getActId()));
     }
 }
