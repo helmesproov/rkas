@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IContract, IContractChange, NewContract, NewContractChange } from '../contract.model';
+import { createRequestOption } from "../../../core/request/request-util";
 
 type RestOf<T extends IContractChange | NewContractChange> = Omit<T, 'validFrom' | 'validTo'> & {
     validFrom?: dayjs.Dayjs | null;
@@ -16,7 +17,7 @@ type RestOf<T extends IContractChange | NewContractChange> = Omit<T, 'validFrom'
 export type RestService = RestOf<IContractChange>;
 
 export type EntityResponseType = HttpResponse<IContract>;
-export type EntityArrayResponseType = HttpResponse<IContractChange[]>;
+export type EntityArrayResponseType = HttpResponse<IContract[]>;
 export type ContractChangeArrayResponseType = HttpResponse<IContractChange[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -42,6 +43,8 @@ export class ContractService {
             ...contract,
             validFrom: contract.validFrom?.toJSON() ?? null,
             validTo: contract.validTo?.toJSON() ?? null,
+            pendingValidFrom: contract.pendingValidFrom?.toJSON() ?? null,
+            pendingValidTo: contract.pendingValidTo?.toJSON() ?? null,
         };
     }
 
@@ -49,9 +52,14 @@ export class ContractService {
         return this.http.get<IContract>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    query(): Observable<ContractChangeArrayResponseType> {
+    queryPendingChanges(): Observable<ContractChangeArrayResponseType> {
         return this.http.get<IContractChange[]>(`${this.resourceUrl}/pending-changes`, { observe: 'response' })
             .pipe(map(res => this.convertResponseArrayFromServer(res)));
+    }
+
+    query(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<IContract[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
     delete(id: number): Observable<HttpResponse<{}>> {
@@ -103,6 +111,8 @@ export class ContractService {
             ...restService,
             validFrom: restService.validFrom ? dayjs(restService.validFrom) : undefined,
             validTo: restService.validTo ? dayjs(restService.validTo) : undefined,
+            pendingValidFrom: restService.pendingValidFrom ? dayjs(restService.pendingValidFrom) : undefined,
+            pendingValidTo: restService.pendingValidTo ? dayjs(restService.pendingValidTo) : undefined,
         };
     }
 }

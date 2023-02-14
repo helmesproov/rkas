@@ -1,19 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, RendererFactory2, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.component.html',
 })
 export class MainComponent implements OnInit {
-  constructor(private titleService: Title, private router: Router) {}
+  private renderer: Renderer2;
+
+  constructor(
+      private titleService: Title,
+      private router: Router,
+      private translateService: TranslateService,
+      rootRenderer: RendererFactory2
+  ) {
+    this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
+  }
 
   ngOnInit(): void {
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.updateTitle();
       }
+    });
+
+    this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
+      this.updateTitle();
+      dayjs.locale(langChangeEvent.lang);
+      this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
   }
 
@@ -28,8 +46,8 @@ export class MainComponent implements OnInit {
   private updateTitle(): void {
     let pageTitle = this.getPageTitle(this.router.routerState.snapshot.root);
     if (!pageTitle) {
-      pageTitle = 'Lepinguregister';
+      pageTitle = 'global.title';
     }
-    this.titleService.setTitle(pageTitle);
+    this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle(title));
   }
 }

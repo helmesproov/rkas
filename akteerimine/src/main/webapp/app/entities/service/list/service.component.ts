@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable, switchMap, tap } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { combineLatest, Observable, switchMap, tap, finalize } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
 
 import { IService } from '../service.model';
 import { EntityArrayResponseType, ServiceService } from '../service/service.service';
+import { ServiceFormGroup, ServiceFormService } from "./service-form.service";
 
 @Component({
     selector: 'jhi-service',
@@ -14,15 +15,19 @@ export class ServiceComponent implements OnInit {
     @Input() realEstateId!: number;
     @Input() actId!: number;
     services?: IService[];
+    editedService?: IService;
     isLoading = false;
+    isSaving = false;
 
     constructor(
         protected serviceService: ServiceService,
         protected activatedRoute: ActivatedRoute,
         public router: Router,
-        protected activeModal: NgbActiveModal
+        protected serviceFormService: ServiceFormService,
     ) {
     }
+
+    editForm: ServiceFormGroup = this.serviceFormService.createServiceFormGroup();
 
     trackId = (_index: number, item: IService): number => this.serviceService.getServiceIdentifier(item);
 
@@ -31,6 +36,7 @@ export class ServiceComponent implements OnInit {
     }
 
     load(): void {
+
         this.loadFromBackendWithRouteInformations().subscribe({
             next: (res: EntityArrayResponseType) => {
                 this.onResponseSuccess(res);
@@ -58,19 +64,45 @@ export class ServiceComponent implements OnInit {
         return this.serviceService.query(this.realEstateId).pipe(tap(() => (this.isLoading = false)));
     }
 
+    protected updateForm(service: IService): void {
+        this.serviceFormService.resetForm(this.editForm, service);
+    }
+
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<IService>>): void {
+        result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+            next: () => this.onSaveSuccess(),
+            error: () => this.onSaveError(),
+        });
+    }
+
+    protected onSaveSuccess(): void {
+        this.load();
+    }
+
+    protected onSaveFinalize(): void {
+        this.isSaving = false;
+    }
+
+    protected onSaveError(): void {
+    }
+
     onEdit(service: IService) {
         this.services?.forEach(service => {
             service.isEdit = false;
         });
         service.isEdit = true;
+        if (service) {
+            this.updateForm(service);
+            this.editedService = service;
+        }
     }
 
-    update(service: IService) {
-        service.isEdit = false;
-        this.serviceService.update(service).subscribe(() => {
-            this.activeModal.close();
-            this.router.navigate(['/act']);
-        });
+    update() {
+        if (this.editedService) {
+            this.editedService.isEdit = false;
+        }
+        const service = this.serviceFormService.getService(this.editForm);
+        service.actId = this.actId;
+        this.subscribeToSaveResponse(this.serviceService.update(service));
     }
-
 }

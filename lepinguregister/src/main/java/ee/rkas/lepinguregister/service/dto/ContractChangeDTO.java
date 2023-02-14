@@ -16,6 +16,9 @@ public class ContractChangeDTO implements Serializable {
     private BigDecimal price;
     private Instant validFrom;
     private Instant validTo;
+    private BigDecimal pendingPrice;
+    private Instant pendingValidFrom;
+    private Instant pendingValidTo;
 
     public Long getId() {
         return id;
@@ -48,28 +51,28 @@ public class ContractChangeDTO implements Serializable {
         this.serviceName = serviceName;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getPendingPrice() {
+        return pendingPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPendingPrice(BigDecimal pendingPrice) {
+        this.pendingPrice = pendingPrice;
     }
 
-    public Instant getValidFrom() {
-        return validFrom;
+    public Instant getPendingValidFrom() {
+        return pendingValidFrom;
     }
 
-    public void setValidFrom(Instant validFrom) {
-        this.validFrom = validFrom;
+    public void setPendingValidFrom(Instant pendingValidFrom) {
+        this.pendingValidFrom = pendingValidFrom;
     }
 
-    public Instant getValidTo() {
-        return validTo;
+    public Instant getPendingValidTo() {
+        return pendingValidTo;
     }
 
-    public void setValidTo(Instant validTo) {
-        this.validTo = validTo;
+    public void setPendingValidTo(Instant pendingValidTo) {
+        this.pendingValidTo = pendingValidTo;
     }
 
     public Long getRealEstateId() {
@@ -104,11 +107,38 @@ public class ContractChangeDTO implements Serializable {
         this.actId = actId;
     }
 
-    public ContractChangeDTO(Long id, Long serviceId, Long realEstateId, Long pendingServiceId, Long actId, String contractName, String realEstateName, String serviceName, BigDecimal price, Instant validFrom, Instant validTo) {
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
+
+    public ContractChangeDTO(Long id, Long serviceId, Long realEstateId, Long pendingServiceId, Long actId, String contractName, String realEstateName, String serviceName, BigDecimal price, Instant validFrom, Instant validTo, BigDecimal pendingPrice, Instant pendingValidFrom, Instant pendingValidTo) {
         this.id = id;
         this.contractName = contractName;
         this.realEstateName = realEstateName;
         this.serviceName = serviceName;
+        this.pendingPrice = pendingPrice;
+        this.pendingValidFrom = pendingValidFrom;
+        this.pendingValidTo = pendingValidTo;
         this.price = price;
         this.validFrom = validFrom;
         this.validTo = validTo;

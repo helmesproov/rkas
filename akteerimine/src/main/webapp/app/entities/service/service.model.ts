@@ -10,6 +10,7 @@ export interface IService {
   isEdit?: boolean | null;
   actId: number;
   realEstate?: Pick<IRealEstate, 'id'> | null;
+  editPending?: boolean | null;
 }
 
 export type NewService = Omit<IService, 'id'> & { id: null };

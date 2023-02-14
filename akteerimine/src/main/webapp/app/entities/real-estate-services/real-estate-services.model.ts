@@ -6,3 +6,6 @@ export interface IRealEstateService {
 }
 
 export type NewRealEstateService = Omit<IRealEstateService, 'id'> & { id: null };
+
+export class IRealEstate {
+}

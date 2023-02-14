@@ -1,0 +1,82 @@
+<div>
+
+    <h2 id="page-heading" data-cy="ContractHeading">
+        <span>Lepingud, milles teenuse hind vajab muutmist</span>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="contracts?.length === 0">
+        <span jhiTranslate="contract.missing"></span>
+    </div>
+
+    <div class="table-responsive table-entities" id="entities" *ngIf="contracts && contracts.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Leping</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Objekt</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Teenus</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Hind</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Kehtiv alates</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Kehtiv kuni</span>
+                    </div>
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let contract of contracts" data-cy="entityTable">
+                <td>{{ contract.contractName }}</td>
+                <td>{{ contract.realEstateName }}</td>
+                <td>{{ contract.serviceName }}</td>
+                <td>{{ contract.pendingPrice }} <span *ngIf="contract.pendingPrice !== contract.price"> ({{ contract.price }})</span></td>
+
+                <td> <span> {{ contract.pendingValidFrom | formatMediumDatetime }} </span>
+                    <span *ngIf="contract.validFrom && contract.pendingValidFrom && contract.validFrom.format(DATE_TIME_FORMAT) !== contract.pendingValidFrom.format(DATE_TIME_FORMAT)">
+                        ({{ contract.validFrom | formatMediumDatetime}})
+                    </span>
+                </td>
+                <td>
+                    <span> {{ contract.pendingValidTo | formatMediumDatetime }} </span>
+                    <span *ngIf="contract.validTo && contract.pendingValidTo && contract.validTo.format(DATE_TIME_FORMAT) !== contract.pendingValidTo.format(DATE_TIME_FORMAT)">
+                        ({{ contract.validTo | formatMediumDatetime}})
+                    </span>
+                </td>
+                <td class="text-end">
+                    <div class="btn-group">
+                        <button type="submit" (click)="update(contract)" class="btn btn-primary"
+                                data-cy="entityDeleteButton">
+                            <span class="d-none d-md-inline">Kinnita</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,12 +1,14 @@
 package ee.rkas.lepinguregister.service;
 
+import ee.rkas.lepinguregister.domain.PendingService;
 import ee.rkas.lepinguregister.domain.Service;
+import ee.rkas.lepinguregister.message.MessageService;
 import ee.rkas.lepinguregister.repository.ActRepository;
 import ee.rkas.lepinguregister.repository.PendingServiceRepository;
 import ee.rkas.lepinguregister.repository.RealEstateRepository;
 import ee.rkas.lepinguregister.repository.ServiceRepository;
+import ee.rkas.lepinguregister.service.dto.ActDTO;
 import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
-import ee.rkas.lepinguregister.service.dto.ContractDTO;
 import ee.rkas.lepinguregister.service.dto.ServiceDTO;
 import ee.rkas.lepinguregister.service.mapper.ServiceMapper;
 import java.util.LinkedList;
@@ -28,6 +30,7 @@ public class ServiceService {
     private final PendingServiceRepository pendingServiceRepository;
     private final RealEstateRepository realEstateRepository;
     private final ActRepository actRepository;
+    private final MessageService messageService;
 
     public ServiceDTO save(ServiceDTO serviceDTO) {
         Service service = serviceMapper.toEntity(serviceDTO);
@@ -60,7 +63,17 @@ public class ServiceService {
 
     @Transactional(readOnly = true)
     public List<ServiceDTO> findAllByRealEstateId(Long realEstateId) {
-        return serviceRepository.findAllByRealEstateId(realEstateId).stream().map(serviceMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return serviceRepository.findAllByRealEstateId(realEstateId).stream().map(service -> {
+            ServiceDTO serviceDTO = serviceMapper.toDto(service);
+            if (pendingServiceRepository.existsByServiceId(serviceDTO.getId())) {
+                serviceDTO.setEditPending(true);
+                PendingService pendingService = pendingServiceRepository.findByServiceId(serviceDTO.getId());
+                serviceDTO.setPrice(pendingService.getPrice());
+                serviceDTO.setValidFrom(pendingService.getValidFrom());
+                serviceDTO.setValidTo(pendingService.getValidTo());
+            }
+            return serviceDTO;
+        }).collect(Collectors.toList());
     }
 
 
@@ -84,9 +97,9 @@ public class ServiceService {
         Service service = new Service();
         service.setId(contractChangeDTO.getServiceId());
         service.setName(contractChangeDTO.getServiceName());
-        service.setPrice(contractChangeDTO.getPrice());
-        service.setValidTo(contractChangeDTO.getValidTo());
-        service.setValidFrom(contractChangeDTO.getValidFrom());
+        service.setPrice(contractChangeDTO.getPendingPrice());
+        service.setValidTo(contractChangeDTO.getPendingValidTo());
+        service.setValidFrom(contractChangeDTO.getPendingValidFrom());
         service.setRealEstate(realEstateRepository.findById(contractChangeDTO.getRealEstateId()).orElse(null));
         return serviceRepository.save(service);
     }

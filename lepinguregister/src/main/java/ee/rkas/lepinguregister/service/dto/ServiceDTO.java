@@ -24,6 +24,8 @@ public class ServiceDTO implements Serializable {
 
     private RealEstateDTO realEstate;
 
+    private boolean isEditPending;
+
     public Long getId() {
         return id;
     }
@@ -70,6 +72,14 @@ public class ServiceDTO implements Serializable {
 
     public void setRealEstate(RealEstateDTO realEstate) {
         this.realEstate = realEstate;
+    }
+
+    public boolean isEditPending() {
+        return isEditPending;
+    }
+
+    public void setEditPending(boolean editPending) {
+        isEditPending = editPending;
     }
 
     @Override

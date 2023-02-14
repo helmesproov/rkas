@@ -1,70 +1,39 @@
 <div>
-  <jhi-alert-error></jhi-alert-error>
+    <pending-contracts></pending-contracts>
+    <h2 id="page-heading" data-cy="ContractHeading">
+        <span>Lepingud</span>
+    </h2>
 
-  <jhi-alert></jhi-alert>
+    <div class="alert alert-warning" id="no-result" *ngIf="contracts?.length === 0">
+        <span>Ei leitud ühtegi lepingut</span>
+    </div>
 
-  <h2 id="page-heading" data-cy="ContractHeading">
-    <span>Lepingud, milles teenuse hind vajab muutmist</span>
-  </h2>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="contracts?.length === 0">
-    <span>Lepinguid pole</span>
-  </div>
-
-  <div class="table-responsive table-entities" id="entities" *ngIf="contracts && contracts.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col">
-            <div class="d-flex">
-              <span>Leping</span>
-            </div>
-          </th>
-          <th scope="col">
-            <div class="d-flex">
-              <span>Objekt</span>
-            </div>
-          </th>
-          <th scope="col">
-            <div class="d-flex">
-              <span>Teenus</span>
-            </div>
-          </th>
-          <th scope="col">
-            <div class="d-flex">
-              <span>Hind</span>
-            </div>
-          </th>
-          <th scope="col">
-            <div class="d-flex">
-              <span>Kehtiv alates</span>
-            </div>
-          </th>
-          <th scope="col">
-            <div class="d-flex">
-              <span>Kehtiv kuni</span>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let contract of contracts" data-cy="entityTable">
-          <td>{{ contract.contractName }}</td>
-          <td>{{ contract.realEstateName }}</td>
-          <td>{{ contract.serviceName }}</td>
-          <td>{{ contract.price }}</td>
-          <td>{{ contract.validFrom | formatMediumDatetime }}</td>
-          <td>{{ contract.validTo | formatMediumDatetime }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" (click)="update(contract)" class="btn btn-primary" data-cy="entityDeleteButton">
-                <span class="d-none d-md-inline">Kinnita</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="table-responsive table-entities" id="entities" *ngIf="contracts && contracts.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Nr</span>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <span>Leping</span>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let contract of contracts; trackBy: trackId" data-cy="entityTable">
+                <td>
+                    {{ contract.id }}
+                </td>
+                <td>
+                    {{ contract.name }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

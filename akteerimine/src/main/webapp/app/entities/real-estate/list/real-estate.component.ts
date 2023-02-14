@@ -63,8 +63,6 @@ export class RealEstateComponent implements OnInit {
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
-    console.log("HAHAHHA")
-    console.log(this.activatedRoute.queryParamMap)
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
         switchMap(() => this.queryBackend(this.predicate, this.ascending))

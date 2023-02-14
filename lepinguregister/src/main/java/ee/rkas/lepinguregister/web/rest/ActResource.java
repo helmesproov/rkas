@@ -3,6 +3,7 @@ package ee.rkas.lepinguregister.web.rest;
 import ee.rkas.lepinguregister.message.MessageService;
 import ee.rkas.lepinguregister.repository.ActRepository;
 import ee.rkas.lepinguregister.service.ActService;
+import ee.rkas.lepinguregister.service.MailService;
 import ee.rkas.lepinguregister.service.dto.ActDTO;
 import ee.rkas.lepinguregister.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -39,7 +40,7 @@ public class ActResource {
     private static final String ENTITY_NAME = "act";
     private final ActService actService;
     private final ActRepository actRepository;
-    private final MessageService messageService;
+    private final MailService mailService;
 
     /**
      * {@code POST  /acts} : Create a new act.

@@ -10,10 +10,14 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
+import { FindLanguageFromKeyPipe } from "./language/find-language-from-key.pipe";
+import { TranslateDirective } from "./language/translate.directive";
 
 @NgModule({
   imports: [SharedLibsModule],
   declarations: [
+    FindLanguageFromKeyPipe,
+    TranslateDirective,
     AlertComponent,
     AlertErrorComponent,
     DurationPipe,
@@ -25,6 +29,8 @@ import { FilterComponent } from './filter/filter.component';
     FilterComponent,
   ],
   exports: [
+    FindLanguageFromKeyPipe,
+    TranslateDirective,
     SharedLibsModule,
     AlertComponent,
     AlertErrorComponent,
