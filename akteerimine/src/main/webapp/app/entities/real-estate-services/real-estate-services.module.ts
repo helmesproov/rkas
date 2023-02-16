@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { RealEstateServicesComponent } from "./list/real-estate-services.component";
-import { RealEstateServiceModifyDialogComponent } from "./modify/real-estate-service-modify-dialog.component";
+import { RealEstateServiceModifyDialogComponent } from "./update/real-estate-service-modify-dialog.component";
 import { ServiceModule } from "../service/service.module";
 
 @NgModule({

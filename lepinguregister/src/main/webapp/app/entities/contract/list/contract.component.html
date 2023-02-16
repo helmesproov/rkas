@@ -14,7 +14,7 @@
             <tr>
                 <th scope="col">
                     <div class="d-flex">
-                        <span>Nr</span>
+                        <span>Number</span>
                     </div>
                 </th>
                 <th scope="col">
@@ -27,7 +27,7 @@
             <tbody>
             <tr *ngFor="let contract of contracts; trackBy: trackId" data-cy="entityTable">
                 <td>
-                    {{ contract.id }}
+                    {{ contract.number }}
                 </td>
                 <td>
                     {{ contract.name }}

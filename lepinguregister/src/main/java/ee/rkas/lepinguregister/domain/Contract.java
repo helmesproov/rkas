@@ -26,6 +26,9 @@ public class Contract implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "number")
+    private String number;
+
     @ManyToMany
     @JoinTable(
         name = "rel_contract__act",
@@ -73,6 +76,19 @@ public class Contract implements Serializable {
 
     public void setActs(Set<Act> acts) {
         this.acts = acts;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public Contract number(String number) {
+        this.setName(number);
+        return this;
     }
 
     public Contract acts(Set<Act> acts) {

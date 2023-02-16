@@ -45,7 +45,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20230130135639-1-data" author="jhipster" context="faker">
+    <changeSet id="20231502133039-2-data" author="jhipster" context="faker">
         <loadData
                   file="config/liquibase/fake-data/real_estate.csv"
                   separator=";"

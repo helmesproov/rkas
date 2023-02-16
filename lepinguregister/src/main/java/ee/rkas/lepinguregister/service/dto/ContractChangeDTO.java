@@ -10,7 +10,7 @@ public class ContractChangeDTO implements Serializable {
     private Long realEstateId;
     private Long pendingServiceId;
     private Long actId;
-    private String contractName;
+    private String contractNumber;
     private String realEstateName;
     private String serviceName;
     private BigDecimal price;
@@ -28,12 +28,12 @@ public class ContractChangeDTO implements Serializable {
         this.id = id;
     }
 
-    public String getContractName() {
-        return contractName;
+    public String getContractNumber() {
+        return contractNumber;
     }
 
-    public void setContractName(String contractName) {
-        this.contractName = contractName;
+    public void setContractNumber(String contractNumber) {
+        this.contractNumber = contractNumber;
     }
 
     public String getRealEstateName() {
@@ -131,9 +131,9 @@ public class ContractChangeDTO implements Serializable {
         this.validTo = validTo;
     }
 
-    public ContractChangeDTO(Long id, Long serviceId, Long realEstateId, Long pendingServiceId, Long actId, String contractName, String realEstateName, String serviceName, BigDecimal price, Instant validFrom, Instant validTo, BigDecimal pendingPrice, Instant pendingValidFrom, Instant pendingValidTo) {
+    public ContractChangeDTO(Long id, Long serviceId, Long realEstateId, Long pendingServiceId, Long actId, String contractNumber, String realEstateName, String serviceName, BigDecimal price, Instant validFrom, Instant validTo, BigDecimal pendingPrice, Instant pendingValidFrom, Instant pendingValidTo) {
         this.id = id;
-        this.contractName = contractName;
+        this.contractNumber = contractNumber;
         this.realEstateName = realEstateName;
         this.serviceName = serviceName;
         this.pendingPrice = pendingPrice;

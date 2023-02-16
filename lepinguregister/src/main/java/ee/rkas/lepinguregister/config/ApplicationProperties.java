@@ -21,6 +21,9 @@ public class ApplicationProperties {
     @Setter
     public static class Mail {
 
+        // Set address to
+        private String to = "oliver-erik.suik@helmes.com";
+
         private String from = "helmes.proov@gmail.com";
 
         private String baseUrl = "";

@@ -51,7 +51,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let contract of contracts" data-cy="entityTable">
-                <td>{{ contract.contractName }}</td>
+                <td>{{ contract.contractNumber }}</td>
                 <td>{{ contract.realEstateName }}</td>
                 <td>{{ contract.serviceName }}</td>
                 <td>{{ contract.pendingPrice }} <span *ngIf="contract.pendingPrice !== contract.price"> ({{ contract.price }})</span></td>

@@ -16,6 +16,7 @@ public class ContractDTO implements Serializable {
 
     private String name;
 
+    private String number;
     private Set<ActDTO> acts = new HashSet<>();
 
     public Long getId() {
@@ -40,6 +41,14 @@ public class ContractDTO implements Serializable {
 
     public void setActs(Set<ActDTO> acts) {
         this.acts = acts;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override

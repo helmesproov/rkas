@@ -1,5 +1,5 @@
 import dayjs from 'dayjs/esm';
-import { IRealEstate } from 'app/entities/real-estate/real-estate.model';
+import { IAct } from "../act/act.model";
 
 export interface IService {
   id: number;
@@ -11,6 +11,19 @@ export interface IService {
   actId: number;
   realEstate?: Pick<IRealEstate, 'id'> | null;
   editPending?: boolean | null;
+}
+
+interface IRealEstate {
+  id: number;
+  name?: string | null;
+  contracts?: Pick<IContract, 'id'>[] | null;
+}
+
+interface IContract {
+  id: number;
+  name?: string | null;
+  acts?: Pick<IAct, 'id'>[] | null;
+  realEstates?: Pick<IRealEstate, 'id'>[] | null;
 }
 
 export type NewService = Omit<IService, 'id'> & { id: null };

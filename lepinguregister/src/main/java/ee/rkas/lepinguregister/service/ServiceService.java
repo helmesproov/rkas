@@ -11,26 +11,31 @@ import ee.rkas.lepinguregister.service.dto.ActDTO;
 import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
 import ee.rkas.lepinguregister.service.dto.ServiceDTO;
 import ee.rkas.lepinguregister.service.mapper.ServiceMapper;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ee.rkas.lepinguregister.type.ActStatus;
+import ee.rkas.lepinguregister.web.rest.ActResource;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class ServiceService {
-
     private final ServiceRepository serviceRepository;
     private final ServiceMapper serviceMapper;
     private final PendingServiceRepository pendingServiceRepository;
     private final RealEstateRepository realEstateRepository;
     private final ActRepository actRepository;
-    private final MessageService messageService;
+    private final MailService mailService;
+
+    private final Logger log = LoggerFactory.getLogger(ActResource.class);
 
     public ServiceDTO save(ServiceDTO serviceDTO) {
         Service service = serviceMapper.toEntity(serviceDTO);
@@ -46,14 +51,14 @@ public class ServiceService {
 
     public Optional<ServiceDTO> partialUpdate(ServiceDTO serviceDTO) {
         return serviceRepository
-            .findById(serviceDTO.getId())
-            .map(existingService -> {
-                serviceMapper.partialUpdate(existingService, serviceDTO);
+                .findById(serviceDTO.getId())
+                .map(existingService -> {
+                    serviceMapper.partialUpdate(existingService, serviceDTO);
 
-                return existingService;
-            })
-            .map(serviceRepository::save)
-            .map(serviceMapper::toDto);
+                    return existingService;
+                })
+                .map(serviceRepository::save)
+                .map(serviceMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -90,6 +95,14 @@ public class ServiceService {
         pendingServiceRepository.deleteById(contractChangeDTO.getPendingServiceId());
         Service service = updateService(contractChangeDTO);
         actRepository.updateStatus(contractChangeDTO.getActId(), ActStatus.KOOSTAMISEL.toString());
+        try {
+            mailService.sendUpdatedServicePriceMail(contractChangeDTO.getContractNumber(),
+                    contractChangeDTO.getRealEstateName(),
+                    contractChangeDTO.getServiceName(),
+                    contractChangeDTO.getPendingPrice());
+        } catch (Exception e) {
+            log.info("Error sending email: " + e.getMessage());
+        }
         return serviceMapper.toDto(service);
     }
 

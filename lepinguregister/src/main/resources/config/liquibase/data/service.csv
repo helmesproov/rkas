@@ -1,11 +1,5 @@
 id;name;price;valid_from;valid_to;real_estate_id
-1;Service - Wooden collaborative system;49492;2023-01-30T13:39:49;2023-01-30T03:21:51;1
-2;Service - leverage pixel;94683;2023-01-30T12:11:28;2023-01-30T01:08:07;1
-3;Service - HDD revolutionary Account;86970;2023-01-30T11:09:49;2023-01-30T13:07:00;1
-4;Service - Bedfordshire;12372;2023-01-29T13:58:43;2023-01-30T01:00:28;1
-5;Service - Nevada;26369;2023-01-29T22:17:48;2023-01-29T20:56:43;1
-6;Service - reinvent Checking THX;40769;2023-01-29T14:33:20;2023-01-29T21:17:43;1
-7;Service - Squares Bedfordshire;10866;2023-01-30T07:00:10;2023-01-29T18:50:23;2
-8;Service - project holistic;61164;2023-01-29T23:58:35;2023-01-29T21:59:24;2
-9;Service - Handmade;83015;2023-01-30T05:54:04;2023-01-29T21:53:52;2
-10;Service - Garden Avon;4487;2023-01-29T23:20:56;2023-01-30T11:38:10;2
+1;2100 - Krundi rajatiste TH;15.80;2019-01-10T13:39:49;;1
+2;2200 - Ehitiste põhitarindite TH;16.90;2019-01-10T12:11:28;;1
+3;2300 - Hoone siseruumides tehtav tarindite TH;44.96;2019-01-10T11:09:49;2019-01-20T01:00:28;1
+4;2410 - Küttesüsteemide TH;25.20;2019-01-10T13:58:43;2019-01-20T01:00:28;2

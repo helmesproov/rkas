@@ -5,6 +5,7 @@ import dayjs from 'dayjs/esm';
 export interface IContract {
   id: number;
   name?: string | null;
+  number?: string | null;
   acts?: Pick<IAct, 'id'>[] | null;
   realEstates?: Pick<IRealEstate, 'id'>[] | null;
 }
@@ -14,7 +15,7 @@ export interface IContractChange {
   serviceId: number;
   realEstateId: number;
   pendingServiceId: number;
-  contractName?: string | null;
+  contractNumber?: string | null;
   realEstateName?: string | null;
   validFrom?: dayjs.Dayjs | null;
   validTo?: dayjs.Dayjs | null;

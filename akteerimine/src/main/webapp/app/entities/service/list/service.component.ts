@@ -36,7 +36,6 @@ export class ServiceComponent implements OnInit {
     }
 
     load(): void {
-
         this.loadFromBackendWithRouteInformations().subscribe({
             next: (res: EntityArrayResponseType) => {
                 this.onResponseSuccess(res);

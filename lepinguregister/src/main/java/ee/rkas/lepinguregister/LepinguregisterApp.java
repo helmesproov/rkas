@@ -11,10 +11,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.scheduling.annotation.EnableAsync;
 import tech.jhipster.config.DefaultProfileUtil;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableAsync
 public class LepinguregisterApp {
 
     private final Environment env;

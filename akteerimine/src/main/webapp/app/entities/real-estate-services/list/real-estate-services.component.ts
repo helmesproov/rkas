@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IRealEstateService } from "../real-estate-services.model";
 import { RealEstateServicesService } from "../service/real-estate-services.service";
-import { EntityArrayResponseType } from "../../real-estate/service/real-estate.service";
+import { EntityArrayResponseType } from "../service/real-estate-services.service";
 import { combineLatest, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RealEstateServiceModifyDialogComponent } from "../modify/real-estate-service-modify-dialog.component";
+import { RealEstateServiceModifyDialogComponent } from "../update/real-estate-service-modify-dialog.component";
 
 @Component({
     selector: 'real-estate-services',

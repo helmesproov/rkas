@@ -70,10 +70,10 @@ export class ServiceFormService {
     if (fromCtrl == undefined) {
       return { message: 'Algus kuupäev ei tohi olla tühi' }
     }
-    if (toCtrl == undefined) {
+    if (toCtrl?.value == null) {
       return null;
     }
-    return new Date(fromCtrl.value) > new Date(toCtrl.value) ? { message: 'Alguse aeg ei tohi enne lõpu aega' } : null;
+    return new Date(fromCtrl.value) > new Date(toCtrl.value) ? { message: 'Algusaeg ei tohi olla enne lõpu aega' } : null;
   }
 
   getService(form: ServiceFormGroup): IService {

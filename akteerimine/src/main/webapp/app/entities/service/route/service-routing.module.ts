@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ServiceComponent } from '../list/service.component';
-import { ServiceDetailComponent } from '../detail/service-detail.component';
-import { ServiceRoutingResolveService } from './service-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
 
 const serviceRoute: Routes = [
@@ -13,14 +11,6 @@ const serviceRoute: Routes = [
     component: ServiceComponent,
     data: {
       defaultSort: 'id,' + ASC,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/view',
-    component: ServiceDetailComponent,
-    resolve: {
-      service: ServiceRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="20230213113550-1-data" author="jhipster" context="prod">
+    <changeSet id="20230216166640-1-data" author="jhipster" context="prod">
         <loadData
                 file="config/liquibase/data/real_estate.csv"
                 separator=";"
@@ -23,6 +23,7 @@
                 usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
+            <column name="number" type="string"/>
         </loadData>
 
         <loadData
