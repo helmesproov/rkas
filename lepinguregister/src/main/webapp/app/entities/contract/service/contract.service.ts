@@ -34,7 +34,7 @@ export class ContractService {
     update(contract: IContractChange): Observable<EntityResponseType> {
         const copy = this.convertDateFromClient(contract);
         return this.http
-            .put<RestService>(`api/service/pending/${contract.id}`, copy, { observe: 'response' })
+            .put<RestService>(`api/services/pending/${contract.id}`, copy, { observe: 'response' })
             .pipe(map(res => this.convertResponseFromServer(res)));
     }
 
@@ -53,7 +53,7 @@ export class ContractService {
     }
 
     queryPendingChanges(): Observable<ContractChangeArrayResponseType> {
-        return this.http.get<IContractChange[]>(`${this.resourceUrl}/pending-changes`, { observe: 'response' })
+        return this.http.get<IContractChange[]>(`api/services/pending`, { observe: 'response' })
             .pipe(map(res => this.convertResponseArrayFromServer(res)));
     }
 

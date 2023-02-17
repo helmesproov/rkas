@@ -61,19 +61,28 @@ export class ServiceFormService {
       validFrom: new FormControl(serviceRawValue.validFrom),
       validTo: new FormControl(serviceRawValue.validTo),
       realEstate: new FormControl(serviceRawValue.realEstate),
-    }, [this.dateValidator]);
+    }, [this.dateValidator, this.priceValidator]);
   }
 
   dateValidator(group: AbstractControl): ValidationErrors | null {
     const fromCtrl = group.get('validFrom');
     const toCtrl = group.get('validTo');
-    if (fromCtrl == undefined) {
-      return { message: 'Algus kuupäev ei tohi olla tühi' }
+    if (fromCtrl?.value == null) {
+      return { dateErrorMessage: 'Algus kuupäev ei tohi olla tühi' }
     }
     if (toCtrl?.value == null) {
       return null;
     }
-    return new Date(fromCtrl.value) > new Date(toCtrl.value) ? { message: 'Algusaeg ei tohi olla enne lõpu aega' } : null;
+    return new Date(fromCtrl.value) > new Date(toCtrl.value) ? { dateErrorMessage: 'Algusaeg ei tohi olla enne lõpu aega' } : null;
+  }
+
+  priceValidator(group: AbstractControl): ValidationErrors | null {
+    const fromPrice = group.get('price');
+
+    if (fromPrice?.value == null || fromPrice?.value == "") {
+      return { priceErrorMessage: 'Hind ei tohi olla tühi' }
+    }
+    return fromPrice.value < 0 ? { priceErrorMessage: 'Hind ei tohi olla negatiivne' } : null;
   }
 
   getService(form: ServiceFormGroup): IService {

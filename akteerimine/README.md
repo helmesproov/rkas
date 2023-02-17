@@ -1,11 +1,17 @@
-# akteerimine
+# Akteerimine
 ## Quickstart
+Before running this application, make sure the PostgreSQL and ActiveMQ Docker containers are running.
+
+Install npm dependencies:
 ```
-docker-compose -f src/main/docker/activemq.yml up -d
-
 npm install
-
+```
+Start backend on port 8081:
+```
 ./gradlew -x webapp
+```
+Start frontend on port 9001:
+```
 npm start
 ```
 
@@ -78,24 +84,3 @@ To package your application as a war in order to deploy it to an application ser
 ```
 ./gradlew -Pprod -Pwar clean bootWar
 ```
-
-## Using Docker to simplify development
-For example, to start a postgresql database in a docker container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml up -d
-```
-
-To stop it and remove the container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml down
-```
-
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-```
-npm run java:docker
-```
-

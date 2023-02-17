@@ -47,6 +47,9 @@
                     <td>
                         <div *ngIf="service.isEdit">
                             <input type="text" formControlName="price" class="form-control"/>
+                            <span class="text-danger" font *ngIf="editForm.errors && service.isEdit">
+                        {{editForm.errors.priceErrorMessage}}
+                    </span>
                         </div>
                         <div *ngIf="!service.isEdit">
                             {{service.price}} €
@@ -72,7 +75,7 @@
                                    placeholder="YYYY-MM-DD HH:mm"
                             />
                             <span class="text-danger" font *ngIf="editForm.errors && service.isEdit">
-                        {{editForm.errors.message}}
+                        {{editForm.errors.dateErrorMessage}}
                     </span>
                         </div>
                         <div *ngIf="!service.isEdit">

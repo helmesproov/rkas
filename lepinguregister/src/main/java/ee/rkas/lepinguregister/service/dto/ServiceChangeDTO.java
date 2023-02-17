@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public class ContractChangeDTO implements Serializable {
+public class ServiceChangeDTO implements Serializable {
     private Long id;
     private Long serviceId;
     private Long realEstateId;
@@ -131,7 +131,7 @@ public class ContractChangeDTO implements Serializable {
         this.validTo = validTo;
     }
 
-    public ContractChangeDTO(Long id, Long serviceId, Long realEstateId, Long pendingServiceId, Long actId, String contractNumber, String realEstateName, String serviceName, BigDecimal price, Instant validFrom, Instant validTo, BigDecimal pendingPrice, Instant pendingValidFrom, Instant pendingValidTo) {
+    public ServiceChangeDTO(Long id, Long serviceId, Long realEstateId, Long pendingServiceId, Long actId, String contractNumber, String realEstateName, String serviceName, BigDecimal price, Instant validFrom, Instant validTo, BigDecimal pendingPrice, Instant pendingValidFrom, Instant pendingValidTo) {
         this.id = id;
         this.contractNumber = contractNumber;
         this.realEstateName = realEstateName;

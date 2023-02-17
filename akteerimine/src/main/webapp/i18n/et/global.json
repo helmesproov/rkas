@@ -135,7 +135,8 @@
     "emailexists": "E-posti aadress on juba kasutuses!",
     "idexists": "Uue {{ entityName }} ID välja väärtus peab olema tühi",
     "idnull": "Vigane ID",
-    "idinvalid": "Invalid Id",
+    "idinvalid": "Vigane Id",
+    "valuesinvalid": "Väärtused on vigased",
     "idnotfound": "ID cannot be found",
     "file": {
       "could.not.extract": "Ei saanud faili eraldada",

@@ -50,7 +50,7 @@ public class MailService {
 
     @Async
     public void sendUpdatedServicePriceMail(String contractNumber, String realEstateName, String serviceName, BigDecimal newPrice) {
-        String content = String.format("Lepingu %s objekti %s teenuse %s tunnihind on muudetud. Uus hind: %s. Akteerimisega saab jätkata.", contractNumber, realEstateName, serviceName, newPrice);
+        String content = String.format("Lepingu %s objekti %s teenuse %s tunnihind on muudetud. Uus hind: %s €. Akteerimisega saab jätkata.", contractNumber, realEstateName, serviceName, newPrice);
         sendEmail("Tunnihinna muudatuste kinnitus", content, false, false);
     }
 }

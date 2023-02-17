@@ -17,13 +17,13 @@ export interface IContractChange {
   pendingServiceId: number;
   contractNumber?: string | null;
   realEstateName?: string | null;
+  serviceName?: string | null;
+  price?: number | null;
   validFrom?: dayjs.Dayjs | null;
   validTo?: dayjs.Dayjs | null;
-  price?: number | null;
   pendingValidFrom?: dayjs.Dayjs | null;
   pendingValidTo?: dayjs.Dayjs | null;
   pendingPrice?: number | null;
-  serviceName?: string | null;
 }
 
 export type NewContract = Omit<IContract, 'id'> & { id: null };

@@ -2,13 +2,12 @@ package ee.rkas.akteerimine.web.rest;
 
 import ee.rkas.akteerimine.service.RealEstateService;
 import ee.rkas.akteerimine.service.dto.RealEstateServicesDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,10 +20,19 @@ public class RealEstateResource {
 
     private final RealEstateService realEstateService;
 
-    @GetMapping("/real-estates/act/{id}")
-    public List<RealEstateServicesDTO> getAllRealEstatesByActId(@PathVariable Long id) {
-        log.debug("REST request to get all RealEstates by Act");
-        return realEstateService.findAllWithActId(id);
+    /**
+     * {@code GET  /real-estates} : get all the realEstates with actId.
+     *
+     * @param actId the id of the act of the real-estate to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of realEstates in body.
+     */
+    @Operation(summary = "Get all real-estates by act id",
+            description = "Retrieve all real estates and number of connected services from the database by act id.")
+    @GetMapping("/real-estates")
+    public ResponseEntity<List<RealEstateServicesDTO>> getAllRealEstatesByActId(@RequestParam("actId") Long actId) {
+        log.debug("REST request to get all RealEstates by Act id");
+        List<RealEstateServicesDTO> realEstates = realEstateService.findAllWithActId(actId);
+        return ResponseEntity.ok().body(realEstates);
     }
 
 }

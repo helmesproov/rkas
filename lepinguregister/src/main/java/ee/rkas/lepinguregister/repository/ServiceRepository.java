@@ -1,8 +1,8 @@
 package ee.rkas.lepinguregister.repository;
 
-import ee.rkas.lepinguregister.domain.RealEstate;
 import ee.rkas.lepinguregister.domain.Service;
-import org.springframework.data.jpa.repository.*;
+import ee.rkas.lepinguregister.service.dto.ServiceChangeDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +16,6 @@ public interface ServiceRepository extends ServiceRepositoryWithBagRelationships
     default List<Service> findAllByRealEstateId(Long id) {
         return this.byRealEstateId(id);
     }
+
+    List<ServiceChangeDTO> fetchServiceChanges();
 }

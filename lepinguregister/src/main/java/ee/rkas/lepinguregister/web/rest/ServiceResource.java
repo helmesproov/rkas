@@ -1,27 +1,22 @@
 package ee.rkas.lepinguregister.web.rest;
 
-import ee.rkas.lepinguregister.domain.Service;
-import ee.rkas.lepinguregister.repository.PendingServiceRepository;
 import ee.rkas.lepinguregister.repository.ServiceRepository;
 import ee.rkas.lepinguregister.service.ServiceService;
-import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
-import ee.rkas.lepinguregister.service.dto.ContractDTO;
+import ee.rkas.lepinguregister.service.dto.ServiceChangeDTO;
 import ee.rkas.lepinguregister.service.dto.ServiceDTO;
 import ee.rkas.lepinguregister.web.rest.errors.BadRequestAlertException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.ResponseUtil;
+
+import javax.validation.Valid;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * REST controller for managing {@link ee.rkas.lepinguregister.domain.Service}.
@@ -34,178 +29,68 @@ public class ServiceResource {
 
     @Value("clientApp")
     private String applicationName;
-
     private final ServiceService serviceService;
 
-    private final ServiceRepository serviceRepository;
-    private final PendingServiceRepository pendingServiceRepository;
-
-    public ServiceResource(ServiceService serviceService, ServiceRepository serviceRepository,
-                           PendingServiceRepository pendingServiceRepository) {
+    public ServiceResource(ServiceService serviceService) {
         this.serviceService = serviceService;
-        this.serviceRepository = serviceRepository;
-        this.pendingServiceRepository = pendingServiceRepository;
     }
 
     /**
-     * {@code POST  /services} : Create a new service.
+     * {@code GET  /services/:id} : get the "id" service.
      *
-     * @param serviceDTO the serviceDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new serviceDTO, or with status {@code 400 (Bad Request)} if the service has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @param realEstateId the id of the realEstate of the service to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the serviceDTO, or with status {@code 404 (Not Found)}.
      */
-    @PostMapping("/services")
-    public ResponseEntity<ServiceDTO> createService(@Valid @RequestBody ServiceDTO serviceDTO) throws URISyntaxException {
-        log.debug("REST request to save Service : {}", serviceDTO);
-        if (serviceDTO.getId() != null) {
-            throw new BadRequestAlertException("A new service cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        ServiceDTO result = serviceService.save(serviceDTO);
-        return ResponseEntity
-            .created(new URI("/api/services/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+    @Operation(summary = "Get all services by real-estate id", description = "Retrieve all services that are connected to real-estate.")
+    @GetMapping("/services")
+    public ResponseEntity<List<ServiceDTO>> getAllServicesByRealEstateId(@RequestParam("realEstateId") Long realEstateId) {
+        log.debug("REST request to get Service by Real-estate id : {}", realEstateId);
+        List<ServiceDTO> services = serviceService.findAllByRealEstateId(realEstateId);
+        return ResponseEntity.ok().body(services);
     }
 
     /**
      * {@code PUT  /services/:id} : Updates an existing service.
      *
-     * @param id the id of the serviceDTO to save.
-     * @param serviceDTO the serviceDTO to update.
+     * @param id         the id of the service to update.
+     * @param serviceChangeDTO  to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated serviceDTO,
      * or with status {@code 400 (Bad Request)} if the serviceDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the serviceDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/services/{id}")
-    public ResponseEntity<ServiceDTO> updateService(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody ServiceDTO serviceDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Service : {}, {}", id, serviceDTO);
-        if (serviceDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, serviceDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!serviceRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        ServiceDTO result = serviceService.update(serviceDTO);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, serviceDTO.getId().toString()))
-            .body(result);
-    }
-
-    @PutMapping("/service/pending/{id}")
+    @Operation(summary = "Confirm pending service changes", description = "This method updates the pending service, changes the act status to 'KOOSTAMISEL' and sends an email confirming the change.")
+    @PutMapping("/services/pending/{id}")
     public ResponseEntity<ServiceDTO> updatePendingService(
             @PathVariable(value = "id", required = false) final Long id,
-            @Valid @RequestBody ContractChangeDTO contractChangeDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Contract : {}, {}", id, contractChangeDTO);
-        if (contractChangeDTO.getId() == null) {
+            @Valid @RequestBody ServiceChangeDTO serviceChangeDTO
+    ) {
+        log.debug("REST request to update Contract : {}, {}", id, serviceChangeDTO);
+        if (serviceChangeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, contractChangeDTO.getId())) {
+        if (!Objects.equals(id, serviceChangeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        ServiceDTO result = serviceService.updatePendingService(contractChangeDTO);
+        ServiceDTO result = serviceService.updatePendingService(serviceChangeDTO);
         return ResponseEntity
                 .ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                 .body(result);
     }
 
-    /**
-     * {@code PATCH  /services/:id} : Partial updates given fields of an existing service, field will ignore if it is null
-     *
-     * @param id the id of the serviceDTO to save.
-     * @param serviceDTO the serviceDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated serviceDTO,
-     * or with status {@code 400 (Bad Request)} if the serviceDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the serviceDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the serviceDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/services/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<ServiceDTO> partialUpdateService(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody ServiceDTO serviceDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Service partially : {}, {}", id, serviceDTO);
-        if (serviceDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, serviceDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!serviceRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<ServiceDTO> result = serviceService.partialUpdate(serviceDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, serviceDTO.getId().toString())
-        );
-    }
 
     /**
-     * {@code GET  /services} : get all the services.
+     * {@code GET  /services/pending} : get all the pending service changes.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of services in body.
      */
-    @GetMapping("/services")
-    public List<ServiceDTO> getAllServices() {
-        log.debug("REST request to get all Services");
-        return serviceService.findAll();
-    }
-
-    /**
-     * {@code GET  /services/:id} : get the "id" service.
-     *
-     * @param id the id of the serviceDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the serviceDTO, or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/services/{id}")
-    public ResponseEntity<ServiceDTO> getService(@PathVariable Long id) {
-        log.debug("REST request to get Service : {}", id);
-        Optional<ServiceDTO> serviceDTO = serviceService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(serviceDTO);
-    }
-
-    /**
-     * {@code GET  /services/:id} : get the "id" service.
-     *
-     * @param id the id of the serviceDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the serviceDTO, or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/services/real-estate/{id}")
-    public List<ServiceDTO> getAllServicesByRealEstateId(@PathVariable Long id) {
-        log.debug("REST request to get Service by Real-estate id : {}", id);
-        return serviceService.findAllByRealEstateId(id);
-    }
-
-    /**
-     * {@code DELETE  /services/:id} : delete the "id" service.
-     *
-     * @param id the id of the serviceDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/services/{id}")
-    public ResponseEntity<Void> deleteService(@PathVariable Long id) {
-        log.debug("REST request to delete Service : {}", id);
-        serviceService.delete(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+    @Operation(summary = "Get all pending service changes", description = "Retrieves all the pending service changes. Selects all records from pending_service table, joined with relevant contract fields.")
+    @GetMapping("/services/pending")
+    public ResponseEntity<List<ServiceChangeDTO>> getAllPendingServiceChanges() {
+        log.debug("REST request to get all pending service changes");
+        List<ServiceChangeDTO> contractDTOS = serviceService.findAllPendingServiceChanges();
+        return ResponseEntity.ok().body(contractDTOS);
     }
 }

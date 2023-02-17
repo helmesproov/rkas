@@ -17,7 +17,7 @@
     "dtoSuffix": "DTO",
     "enableGradleEnterprise": false,
     "enableHibernateCache": false,
-    "enableSwaggerCodegen": false,
+    "enableSwaggerCodegen": true,
     "enableTranslation": true,
     "entitySuffix": "",
     "jhiPrefix": "jhi",

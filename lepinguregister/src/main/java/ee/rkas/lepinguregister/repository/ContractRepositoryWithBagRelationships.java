@@ -1,8 +1,7 @@
 package ee.rkas.lepinguregister.repository;
 
 import ee.rkas.lepinguregister.domain.Contract;
-import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
-import ee.rkas.lepinguregister.service.dto.RealEstateServicesDTO;
+import ee.rkas.lepinguregister.service.dto.ServiceChangeDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,6 +13,4 @@ public interface ContractRepositoryWithBagRelationships {
     List<Contract> fetchBagRelationships(List<Contract> contracts);
 
     Page<Contract> fetchBagRelationships(Page<Contract> contracts);
-
-    List<ContractChangeDTO> fetchContractChanges();
 }

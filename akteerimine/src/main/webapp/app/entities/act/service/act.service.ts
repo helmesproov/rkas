@@ -36,8 +36,7 @@ export class ActService {
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<IAct[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<IAct[]>(this.resourceUrl, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

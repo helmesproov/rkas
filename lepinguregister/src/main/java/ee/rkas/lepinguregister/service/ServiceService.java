@@ -2,13 +2,11 @@ package ee.rkas.lepinguregister.service;
 
 import ee.rkas.lepinguregister.domain.PendingService;
 import ee.rkas.lepinguregister.domain.Service;
-import ee.rkas.lepinguregister.message.MessageService;
 import ee.rkas.lepinguregister.repository.ActRepository;
 import ee.rkas.lepinguregister.repository.PendingServiceRepository;
 import ee.rkas.lepinguregister.repository.RealEstateRepository;
 import ee.rkas.lepinguregister.repository.ServiceRepository;
-import ee.rkas.lepinguregister.service.dto.ActDTO;
-import ee.rkas.lepinguregister.service.dto.ContractChangeDTO;
+import ee.rkas.lepinguregister.service.dto.ServiceChangeDTO;
 import ee.rkas.lepinguregister.service.dto.ServiceDTO;
 import ee.rkas.lepinguregister.service.mapper.ServiceMapper;
 
@@ -66,6 +64,11 @@ public class ServiceService {
         return serviceRepository.findAll().stream().map(serviceMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public List<ServiceChangeDTO> findAllPendingServiceChanges() {
+        log.debug("Request to get all pending service changes");
+        return serviceRepository.fetchServiceChanges();
+    }
+
     @Transactional(readOnly = true)
     public List<ServiceDTO> findAllByRealEstateId(Long realEstateId) {
         return serviceRepository.findAllByRealEstateId(realEstateId).stream().map(service -> {
@@ -81,7 +84,6 @@ public class ServiceService {
         }).collect(Collectors.toList());
     }
 
-
     @Transactional(readOnly = true)
     public Optional<ServiceDTO> findOne(Long id) {
         return serviceRepository.findById(id).map(serviceMapper::toDto);
@@ -91,29 +93,29 @@ public class ServiceService {
         serviceRepository.deleteById(id);
     }
 
-    public ServiceDTO updatePendingService(ContractChangeDTO contractChangeDTO) {
-        pendingServiceRepository.deleteById(contractChangeDTO.getPendingServiceId());
-        Service service = updateService(contractChangeDTO);
-        actRepository.updateStatus(contractChangeDTO.getActId(), ActStatus.KOOSTAMISEL.toString());
+    public ServiceDTO updatePendingService(ServiceChangeDTO serviceChangeDTO) {
+        pendingServiceRepository.deleteById(serviceChangeDTO.getPendingServiceId());
+        Service service = updateService(serviceChangeDTO);
+        actRepository.updateStatus(serviceChangeDTO.getActId(), ActStatus.KOOSTAMISEL.toString());
         try {
-            mailService.sendUpdatedServicePriceMail(contractChangeDTO.getContractNumber(),
-                    contractChangeDTO.getRealEstateName(),
-                    contractChangeDTO.getServiceName(),
-                    contractChangeDTO.getPendingPrice());
+            mailService.sendUpdatedServicePriceMail(serviceChangeDTO.getContractNumber(),
+                    serviceChangeDTO.getRealEstateName(),
+                    serviceChangeDTO.getServiceName(),
+                    serviceChangeDTO.getPendingPrice());
         } catch (Exception e) {
             log.info("Error sending email: " + e.getMessage());
         }
         return serviceMapper.toDto(service);
     }
 
-    private Service updateService(ContractChangeDTO contractChangeDTO) {
+    private Service updateService(ServiceChangeDTO serviceChangeDTO) {
         Service service = new Service();
-        service.setId(contractChangeDTO.getServiceId());
-        service.setName(contractChangeDTO.getServiceName());
-        service.setPrice(contractChangeDTO.getPendingPrice());
-        service.setValidTo(contractChangeDTO.getPendingValidTo());
-        service.setValidFrom(contractChangeDTO.getPendingValidFrom());
-        service.setRealEstate(realEstateRepository.findById(contractChangeDTO.getRealEstateId()).orElse(null));
+        service.setId(serviceChangeDTO.getServiceId());
+        service.setName(serviceChangeDTO.getServiceName());
+        service.setPrice(serviceChangeDTO.getPendingPrice());
+        service.setValidTo(serviceChangeDTO.getPendingValidTo());
+        service.setValidFrom(serviceChangeDTO.getPendingValidFrom());
+        service.setRealEstate(realEstateRepository.findById(serviceChangeDTO.getRealEstateId()).orElse(null));
         return serviceRepository.save(service);
     }
 }

@@ -20,6 +20,5 @@
     <include file="config/liquibase/changelog/20230130135640_added_entity_constraints_Contract.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230130135641_added_entity_constraints_Service.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230208135750_fake_data_relations.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230215113550_contract_add_column_number.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230213113550_load_production_data.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

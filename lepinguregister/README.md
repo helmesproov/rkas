@@ -1,12 +1,23 @@
-# lepinguregister
+# Lepinguregister
 ## Quickstart
+Run PostgreSQL container:
 ```
 docker-compose -f src/main/docker/postgresql.yml up -d
+```
+Run ActiveMQ container:
+```
 docker-compose -f src/main/docker/activemq.yml up -d
-
+```
+Install npm dependencies:
+```
 npm install
-
+```
+Start backend on port 8080:
+```
 ./gradlew -x webapp
+```
+Start frontend on port 9000:
+```
 npm start
 ```
 
@@ -79,24 +90,3 @@ To package your application as a war in order to deploy it to an application ser
 ```
 ./gradlew -Pprod -Pwar clean bootWar
 ```
-
-## Using Docker to simplify development
-For example, to start a postgresql database in a docker container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml up -d
-```
-
-To stop it and remove the container, run:
-
-```
-docker-compose -f src/main/docker/postgresql.yml down
-```
-
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-```
-npm run java:docker
-```
-

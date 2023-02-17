@@ -5,6 +5,9 @@ import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { IService } from '../service.model';
+import { IRealEstateService } from "../../real-estate-services/real-estate-services.model";
+import { HttpParams } from '@angular/common/http';
+
 
 
 type RestOf<T extends IService> = Omit<T, 'validFrom' | 'validTo'> & {
@@ -31,8 +34,9 @@ export class ServiceService {
             .pipe(map(res => this.convertResponseFromServer(res)));
     }
 
-    query(id: number): Observable<EntityArrayResponseType> {
-        return this.http.get<IService[]>(`${this.resourceUrl}/real-estate/${id}`, { observe: 'response' })
+    query(realEstateId: number): Observable<EntityArrayResponseType> {
+        let queryParams = new HttpParams().append("realEstateId", realEstateId);
+        return this.http.get<IService[]>(this.resourceUrl, { observe: 'response', params: queryParams })
             .pipe(map(res => this.convertResponseArrayFromServer(res)));
     }
 
