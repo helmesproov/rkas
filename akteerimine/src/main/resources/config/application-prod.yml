@@ -94,3 +94,5 @@ jhipster:
 # ===================================================================
 
 # application:
+lepinguregister:
+  base-url: http://host.docker.internal:8080

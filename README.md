@@ -53,3 +53,16 @@ Protsess jätkub Aktide registris
 21. Kinnitatud muudatusega keerati muudetud Akti staatus Esitatud --> Koostamisel
 22. Kasutaja avab aktiga seotud objekti teenused ning näeb uut hinda, süsteem ei kuva enam "Kinnitamisele saadetud".
 23. Kasutaja saab akteerimise protsessiga jätkata. Proovitöö protsessid siin puntkis lõppevad.
+
+## Rakenduste käivitamine kasutades Dockerit
+### Käivita ActiveMQ Docker image
+Käivitada "Lepinguregister" peakataloogis:
+docker-compose -f src/main/docker/activemq.yml up -d
+
+### Ehita rakenduste Docker image-d
+Käivitada "Lepinguregister" ja "Akteerimine" peakataloogides:
+./gradlew -Pprod bootJar jibDockerBuild
+
+### Käivita rakenduste Docker image-d
+Käivitada "Lepinguregister" ja "Akteerimine" peakataloogides:
+docker-compose -f src/main/docker/app.yml up -d
