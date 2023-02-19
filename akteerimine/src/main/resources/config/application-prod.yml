@@ -27,7 +27,7 @@ management:
 
 spring:
   activemq:
-    broker-url: tcp://localhost:61616
+    broker-url: tcp://host.docker.internal:61616
   devtools:
     restart:
       enabled: false

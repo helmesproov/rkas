@@ -1,21 +1,48 @@
 # Teenuskeskkonna arendus- ja hooldustööd 2023 - Proovitöö
 ## Projekti struktuur
-Selles kaustas on kaks eraldi projekti, "Lepinguregister" ja "Akteerimine", mis töötavad eraldiseisvalt. Rakenduste ja Dockeri konteinerite käivitamise juhendid on vastavate rakenduste README failides.
+Selles kataloogis on kaks eraldi projekti, "Lepinguregister" ja "Akteerimine", mis töötavad eraldiseisvalt. Rakendused jooksevad Dockeri konteineritel, mille käivitamise juhend on toodud allpool välja.
 
 Lepinguregistri rakendus on
 ühendatud PostgreSQL andmebaasiga. Suhtlus kahe rakenduse vahel toimub läbi REST API päringute ja ActiveMQ sõnumite.
 
 
 ## Meiliaadressi sätestamine
-Teenuste hinna muutuse kinnituse meilid tulevad meiliaadressilt "helmes.proov@gmail.com".
-Sisendaadressi saab sätestada failis "rkas/lepinguregister/config/ApplicationProperties.java".
+Teenuste hinna muutuse kinnituse meilid saadetakse meiliaadressilt "helmes.proov@gmail.com".
+Enne rakenduste töölepanemist tuleb sätestada sisendaadress failis "rkas/lepinguregister/config/ApplicationProperties.java", muutes ära välja "to" väärtuse.
+
+
+## Rakenduste käivitamine kasutades Dockerit
+### Käivita ActiveMQ Docker image
+Käivitada "Lepinguregister" peakataloogis:
+```
+docker-compose -f src/main/docker/activemq.yml up -d
+```
+
+### Ehita rakenduste Docker image-d
+Käivitada "Lepinguregister" ja "Akteerimine" peakataloogides:
+```
+./gradlew -Pprod bootJar jibDockerBuild
+```
+
+### Käivita rakenduste Docker image-d
+Käivitada "Lepinguregister" ja "Akteerimine" peakataloogides:
+```
+docker-compose -f src/main/docker/app.yml up -d
+```
+
+Rakendused jooksevad järgnevatelt aadressidel:
+
+Lepinguregister - http://localhost:8080
+
+Akteerimine - http://localhost:8081
+
 
 ## REST API Kirjeldus
 REST API kirjeldus on loodud kasutades Swagger-UI'd. Kui rakendused on tööle pandud, pääseb dokumentatsioonile ligi järgnevatelt aadressidelt:
 
-Lepinguregister - http://localhost:9000/swagger-ui/index.html#/
+Lepinguregister - http://localhost:8080/swagger-ui/index.html#/
 
-Akteerimine - http://localhost:9001/swagger-ui/index.html#/
+Akteerimine - http://localhost:8081/swagger-ui/index.html#/
 
 Lisaks kirjeldab API dokumentatsioon ka funktsionaalsuse lühikirjeldusi, sisendeid, valideerimis kontrolle ja andmebaasi muudatusi.
 
@@ -52,17 +79,4 @@ Protsess jätkub Aktide registris
 20. Kasutaja värskendab lehe, süsteem kuvab Aktide nimekirja
 21. Kinnitatud muudatusega keerati muudetud Akti staatus Esitatud --> Koostamisel
 22. Kasutaja avab aktiga seotud objekti teenused ning näeb uut hinda, süsteem ei kuva enam "Kinnitamisele saadetud".
-23. Kasutaja saab akteerimise protsessiga jätkata. Proovitöö protsessid siin puntkis lõppevad.
-
-## Rakenduste käivitamine kasutades Dockerit
-### Käivita ActiveMQ Docker image
-Käivitada "Lepinguregister" peakataloogis:
-docker-compose -f src/main/docker/activemq.yml up -d
-
-### Ehita rakenduste Docker image-d
-Käivitada "Lepinguregister" ja "Akteerimine" peakataloogides:
-./gradlew -Pprod bootJar jibDockerBuild
-
-### Käivita rakenduste Docker image-d
-Käivitada "Lepinguregister" ja "Akteerimine" peakataloogides:
-docker-compose -f src/main/docker/app.yml up -d
+23. Kasutaja saab akteerimise protsessiga jätkata. Proovitöö protsessid siin punktis lõppevad.
