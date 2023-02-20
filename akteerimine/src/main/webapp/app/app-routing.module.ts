@@ -16,7 +16,7 @@ import { DEBUG_INFO_ENABLED } from 'app/app.constants';
         navbarRoute,
         ...errorRoute,
       ],
-      { enableTracing: DEBUG_INFO_ENABLED }
+      { enableTracing: DEBUG_INFO_ENABLED, useHash: true}
     ),
   ],
   exports: [RouterModule],
